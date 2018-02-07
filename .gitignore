@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+p2p2.iml
+/mgrsite/target/
+/website/target/
+/core/target/
