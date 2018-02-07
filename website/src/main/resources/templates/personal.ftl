@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>蓝源Eloan-P2P平台</title>
+		<title>P2P平台</title>
 		<!-- 包含一个模板文件,模板文件的路径是从当前路径开始找 -->
 		<#include "common/links-tpl.ftl" />
 		<script type="text/javascript" src="/js/plugins/jquery.form.js"></script>
@@ -148,6 +148,6 @@
 			</div>
 		</div>		
 		
-		<#include "common/footer-tpl.ftl" />
+	<#--	<#include "common/footer-tpl.ftl" />-->
 	</body>
 </html>
