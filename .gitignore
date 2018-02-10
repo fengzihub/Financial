@@ -1,6 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
+.gitignore
 p2p2.iml
+
+/core/target/
 /mgrsite/target/
 /website/target/
-/core/target/

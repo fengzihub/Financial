@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Eloan-P2P平台(系统管理平台)</title>
+
+	<link rel="stylesheet" type="text/css" href="/jquery-easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/jquery-easyui/themes/icon.css">
+	<script type="text/javascript" src="/jquery-easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/jquery-easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="/jquery-easyui/base.js"></script>
+	<script type="text/javascript" src="/jquery-easyui/plugins/jquery.form.js"></script>
+
+	<script>
+		$(function () {
+			$('#loginBtn').click(function () {
+				$('#loginForm').form('submit', {
+					url: "/managerLogin",
+					success: function (data) {
+						data = JSON.parse(data);
+						if (!data.success) {
+							alert(data.msg);
+							return;
+						}
+						window.location.href = "/index";
+					}
+				});
+			});
+		});
+	</script>
+</head>
+<body>
+<section class="container">
+	<div class="login">
+		<h1>用户登录</h1>
+		<form id="loginForm" method="post">
+			<p><input type="text" name="username" value="" placeholder="账号"></p>
+			<p><input type="password" name="password" value="" placeholder="密码"></p>
+			<p class="submit">
+				<input id="loginBtn" type="button" value="登录">
+			</p>
+		</form>
+	</div>
+</section>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.base.mapper.UserinfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.base.domain.Userinfo" >
+    <id column="id" property="id" />
+    <result column="version" property="version" />
+    <result column="bitState" property="bitState" />
+    <result column="realName" property="realName" />
+    <result column="idNumber" property="idNumber" />
+    <result column="phoneNumber" property="phoneNumber" />
+    <result column="email" property="email" />
+
+
+    <association property="educationBackground" column="educationBackground_id"
+                 javaType="cn.fengzihub.p2p.base.domain.SystemDictionaryItem" select="cn.fengzihub.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"/>
+
+    <association property="incomeGrade" column="incomeGrade_id"
+                 javaType="cn.fengzihub.p2p.base.domain.SystemDictionaryItem" select="cn.fengzihub.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"/>
+
+    <association property="marriage" column="marriage_id"
+                 javaType="cn.fengzihub.p2p.base.domain.SystemDictionaryItem" select="cn.fengzihub.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"/>
+
+    <association property="kidCount" column="kidCount_id"
+                 javaType="cn.fengzihub.p2p.base.domain.SystemDictionaryItem" select="cn.fengzihub.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"/>
+
+    <association property="houseCondition" column="houseCondition_id"
+                 javaType="cn.fengzihub.p2p.base.domain.SystemDictionaryItem" select="cn.fengzihub.p2p.base.mapper.SystemDictionaryItemMapper.selectByPrimaryKey"/>
+
+
+
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.base.domain.Userinfo" >
+    insert into `userinfo` (id,version, bitState, realName, idNumber, phoneNumber, email,
+      incomeGrade_id, marriage_id, kidCount_id, educationBackground_id, houseCondition_id
+      )
+    values (#{id},#{version}, #{bitState}, #{realName}, #{idNumber}, #{phoneNumber}, #{email},
+      #{incomeGrade.id}, #{marriage.id}, #{kidCount.id}, #{educationBackground.id}, #{houseCondition.id}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.base.domain.Userinfo" >
+    update `userinfo`
+    set version = version+1,
+      bitState = #{bitState},
+      realName = #{realName},
+      idNumber = #{idNumber},
+      phoneNumber = #{phoneNumber},
+      email = #{email},
+      incomeGrade_id = #{incomeGrade.id},
+      marriage_id = #{marriage.id},
+      kidCount_id = #{kidCount.id},
+      educationBackground_id = #{educationBackground.id},
+      houseCondition_id = #{houseCondition.id}
+    where id = #{id} and version=#{version}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, version, bitState, realName, idNumber, phoneNumber, email, incomeGrade_id,
+    marriage_id, kidCount_id, educationBackground_id, houseCondition_id
+    from `userinfo`
+    where id = #{id}
+  </select>
+
+</mapper>

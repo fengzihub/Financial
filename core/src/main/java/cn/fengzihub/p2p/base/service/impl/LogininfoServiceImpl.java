@@ -1,8 +1,13 @@
 package cn.fengzihub.p2p.base.service.impl;
 
+import cn.fengzihub.p2p.base.domain.Account;
 import cn.fengzihub.p2p.base.domain.Logininfo;
+import cn.fengzihub.p2p.base.domain.Userinfo;
 import cn.fengzihub.p2p.base.mapper.LogininfoMapper;
+import cn.fengzihub.p2p.base.service.IAccountService;
 import cn.fengzihub.p2p.base.service.ILogininfoService;
+import cn.fengzihub.p2p.base.service.IUserinfoService;
+import cn.fengzihub.p2p.base.util.BidConst;
 import cn.fengzihub.p2p.base.util.MD5;
 import cn.fengzihub.p2p.base.util.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class LogininfoServiceImpl implements ILogininfoService {
     @Autowired
     private LogininfoMapper logininfoMapper;
+    @Autowired
+    private IAccountService accountService;
+    @Autowired
+    private IUserinfoService userinfoService;
 
     @Override
     public Logininfo register(String username, String password) {
@@ -31,7 +40,16 @@ public class LogininfoServiceImpl implements ILogininfoService {
         logininfo.setUsername(username);
         logininfo.setPassword(MD5.encode(password));
         logininfo.setState(Logininfo.STATE_NORMAL);
+        logininfo.setUserType(Logininfo.USERTYPE_USER);
         logininfoMapper.insert(logininfo);
+        //用户注册的时候就把Account和Userinfo创建出来
+        Account account = new Account();
+        account.setId(logininfo.getId());
+        accountService.save(account);
+        Userinfo userinfo = new Userinfo();
+        userinfo.setId(logininfo.getId());
+        userinfoService.save(userinfo);
+
         return logininfo;
     }
 
@@ -45,10 +63,10 @@ public class LogininfoServiceImpl implements ILogininfoService {
     }
 
     //登录业务方法
-    public Logininfo userLogin(String username, String password) {
+    public Logininfo userLogin(String username, String password,int userType) {
         //根据用户名,密码去数据库查询
         password = MD5.encode(password);
-        Logininfo logininfo = logininfoMapper.login(username, password);
+        Logininfo logininfo = logininfoMapper.login(username, password,userType);
 
         //登录日志待完善 TODO
 
@@ -57,6 +75,20 @@ public class LogininfoServiceImpl implements ILogininfoService {
             UserContext.setCurrent(logininfo);
         }
         return logininfo;
+    }
+
+    @Override
+    public void initAdmin() {
+        int count = logininfoMapper.queryCountByUserType(Logininfo.USERTYPE_MANAGER);
+        if (count <= 0) {
+            Logininfo logininfo = new Logininfo();
+            logininfo.setState(Logininfo.STATE_NORMAL);
+            logininfo.setUserType(Logininfo.USERTYPE_MANAGER);
+            logininfo.setUsername(BidConst.MANAGER_ACCOUNT);
+            logininfo.setPassword(MD5.encode(BidConst.MANAGER_PASSWORD));
+            logininfoMapper.insert(logininfo);
+        }
+
     }
 
 

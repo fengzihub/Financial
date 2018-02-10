@@ -43,7 +43,7 @@ public class RegisterController {
     @ResponseBody
     public JSONResult userLogin(String username, String password) {
         JSONResult jsonResult = new JSONResult();
-        Logininfo logininfo = logininfoService.userLogin(username, password);
+        Logininfo logininfo = logininfoService.userLogin(username, password,Logininfo.USERTYPE_USER);
         if (logininfo == null) {
             jsonResult.mark("账号或密码错误");
         }

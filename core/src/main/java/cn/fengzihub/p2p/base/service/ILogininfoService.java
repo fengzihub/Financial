@@ -19,5 +19,10 @@ public interface ILogininfoService {
      * @param username
      * @param password
      */
-    Logininfo userLogin(String username, String password);
+    Logininfo userLogin(String username, String password,int userType);
+
+    /**
+     * 初始化后台管理员
+     */
+    void initAdmin();
 }

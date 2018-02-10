@@ -10,6 +10,7 @@ public interface LogininfoMapper {
 
     int selectCountByUsername(String username);
 
-    Logininfo login(@Param("username") String username, @Param("password") String password);
+    Logininfo login(@Param("username") String username, @Param("password") String password, @Param("userType") int userType);
 
+    int queryCountByUserType(int usertypeManager);
 }

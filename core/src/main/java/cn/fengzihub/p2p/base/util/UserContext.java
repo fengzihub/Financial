@@ -2,6 +2,7 @@ package cn.fengzihub.p2p.base.util;
 
 
 import cn.fengzihub.p2p.base.domain.Logininfo;
+import cn.fengzihub.p2p.base.vo.VerifyCode;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -33,6 +34,13 @@ public class UserContext {
         return getRequset().getRemoteAddr();
     }
 
+    public static void setVerifyCode(VerifyCode verifyCode) {
+        getRequset().getSession().setAttribute(VerifyCodeVo_IN_SESSION,verifyCode);
+    }
+
+    public static VerifyCode getVerifyCode() {
+        return (VerifyCode) getRequset().getSession().getAttribute(VerifyCodeVo_IN_SESSION);
+    }
     /*public static void setVerifyCodeVo(VerifyCodeVo verifyCodeVo) {
         getRequset().getSession().setAttribute(VerifyCodeVo_IN_SESSION,verifyCodeVo);
     }

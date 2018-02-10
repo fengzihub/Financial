@@ -28,13 +28,14 @@
 <script type="text/javascript">
 	$(function(){
 		$("#loginForm").validate({
+			//表单校验
 			rules:{
 				username:{
 					required: true
 				},
 				password:{
 					required: true
-				},
+				}
 			},
 			messages:{
 				username:{
@@ -44,7 +45,9 @@
 					required:"请输入密码"
 				}
 			},
+			//提示字变色
 			errorClass:"text-danger",
+			//输入框高亮
 			highlight: function (element,errorClass) {
 				$(element).closest("div.form-gorup").addClass("has-error");
 			},unhighlight: function (element,errorClass) {
@@ -64,7 +67,6 @@
 						}
 					}
 				});
-
 			}
 		});
 	});
