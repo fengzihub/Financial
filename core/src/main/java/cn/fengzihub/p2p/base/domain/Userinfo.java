@@ -28,6 +28,11 @@ public class Userinfo extends BaseDomain{
     public boolean getHasBindPhone() {
         return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_BIND_PHONE);
     }
+    //判断邮箱状态码
+    public boolean getHasBindEmail() {
+        return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_BIND_EMAIL);
+    }
+
 
     public void addSate(Long state) {
          this.bitState = BitStatesUtils.addState(this.bitState, state);

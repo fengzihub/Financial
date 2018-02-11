@@ -1,10 +1,12 @@
 package cn.fengzihub.p2p.base.service.impl;
 
 import cn.fengzihub.p2p.base.domain.Account;
+import cn.fengzihub.p2p.base.domain.IpLog;
 import cn.fengzihub.p2p.base.domain.Logininfo;
 import cn.fengzihub.p2p.base.domain.Userinfo;
 import cn.fengzihub.p2p.base.mapper.LogininfoMapper;
 import cn.fengzihub.p2p.base.service.IAccountService;
+import cn.fengzihub.p2p.base.service.IIpLogService;
 import cn.fengzihub.p2p.base.service.ILogininfoService;
 import cn.fengzihub.p2p.base.service.IUserinfoService;
 import cn.fengzihub.p2p.base.util.BidConst;
@@ -13,6 +15,8 @@ import cn.fengzihub.p2p.base.util.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018.02.07.
@@ -26,7 +30,10 @@ public class LogininfoServiceImpl implements ILogininfoService {
     private IAccountService accountService;
     @Autowired
     private IUserinfoService userinfoService;
+    @Autowired
+    private IIpLogService ipLogService;
 
+    //注册
     @Override
     public Logininfo register(String username, String password) {
 
@@ -49,7 +56,6 @@ public class LogininfoServiceImpl implements ILogininfoService {
         Userinfo userinfo = new Userinfo();
         userinfo.setId(logininfo.getId());
         userinfoService.save(userinfo);
-
         return logininfo;
     }
 
@@ -63,16 +69,27 @@ public class LogininfoServiceImpl implements ILogininfoService {
     }
 
     //登录业务方法
-    public Logininfo userLogin(String username, String password,int userType) {
+    public Logininfo userLogin(String username, String password, int userType) {
         //根据用户名,密码去数据库查询
         password = MD5.encode(password);
-        Logininfo logininfo = logininfoMapper.login(username, password,userType);
+        Logininfo logininfo = logininfoMapper.login(username, password, userType);
 
         //登录日志待完善 TODO
+        IpLog ipLog = new IpLog();
+        ipLog.setLoginTime(new Date());
+        ipLog.setUsername(username);
+        ipLog.setIp(UserContext.getIp());
+        ipLog.setUserType(userType);
 
         if (logininfo != null) {
+            //登录成功保存日志
+            ipLog.setState(IpLog.LOGIN_SUCCESS);
+            ipLogService.save(ipLog);
             //说明登录成功 ,把登录对象存放到session中
             UserContext.setCurrent(logininfo);
+        } else {
+            ipLog.setState(IpLog.LOGIN_FAILED);
+            ipLogService.save(ipLog);
         }
         return logininfo;
     }

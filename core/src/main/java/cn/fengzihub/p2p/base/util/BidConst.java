@@ -42,4 +42,8 @@ public class BidConst {
 	public static final int MESSAGE_VALID_TIME = 5;
 	//发送短信间隔的时间 秒
 	public static final int MANAGER_INTERVAL_TIME = 90;
+	//发送邮箱间隔时间
+	public static final int EAMIL_VAILD_TIME = 5;
+
+
 }

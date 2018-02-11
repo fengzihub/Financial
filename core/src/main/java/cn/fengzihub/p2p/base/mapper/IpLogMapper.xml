@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.base.mapper.IpLogMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.base.domain.IpLog" >
+    <id column="id" property="id" />
+    <result column="ip" property="ip" />
+    <result column="state" property="state" />
+    <result column="username" property="username" />
+    <result column="loginTime" property="loginTime" />
+    <result column="userType" property="userType" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.base.domain.IpLog" useGeneratedKeys="true" keyProperty="id" >
+    insert into `iplog` (ip, state, username, loginTime,userType)
+    values (#{ip}, #{state}, #{username}, #{loginTime},#{userType})
+  </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, ip, state, username, loginTime,userType
+    from `iplog`
+  </select>
+
+  <sql id="where_sql">
+    <where>
+      <if test="username!=null">
+        and username =#{username}
+      </if>
+      <if test="beginDate!=null">
+        and loginTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate!=null">
+        and loginTime &lt;= #{endDate}
+      </if>
+      <if test="state>-1">
+        and state = #{state}
+      </if>
+    </where>
+  </sql>
+
+  <select id="queryPage" resultType="cn.fengzihub.p2p.base.domain.IpLog">
+    select ip, state, username, loginTime
+    from `iplog`
+    <include refid="where_sql"/>
+    ORDER BY loginTime DESC
+  </select>
+</mapper>

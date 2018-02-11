@@ -20,4 +20,10 @@ public interface IUserinfoService {
      * @param verifyCode
      */
     void bindPhone(String phoneNumber, String verifyCode);
+
+    /**
+     * 绑定邮箱验证
+     * @param key
+     */
+    void bindEmail(String key);
 }

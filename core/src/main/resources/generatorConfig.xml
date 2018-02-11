@@ -63,25 +63,7 @@
 				value=""/> -->
 		</javaClientGenerator>
 	
-		<table tableName="Userinfo" domainObjectName="Userinfo"  delimitIdentifiers="true">
-			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
-			<property name="useActualColumnNames" value="true" />
-			<property name="constructorBased" value="false" />
-			<generatedKey column="id" sqlStatement="JDBC"/>
-		</table>
-		<table tableName="Account" domainObjectName="Account"  delimitIdentifiers="true">
-			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
-			<property name="useActualColumnNames" value="true" />
-			<property name="constructorBased" value="false" />
-			<generatedKey column="id" sqlStatement="JDBC"/>
-		</table>
-		<table tableName="SystemDictionary" domainObjectName="SystemDictionary"  delimitIdentifiers="true">
-			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
-			<property name="useActualColumnNames" value="true" />
-			<property name="constructorBased" value="false" />
-			<generatedKey column="id" sqlStatement="JDBC"/>
-		</table>
-		<table tableName="SystemDictionaryItem" domainObjectName="SystemDictionaryItem"  delimitIdentifiers="true">
+		<table tableName="MailVerify" domainObjectName="MailVerify"  delimitIdentifiers="true">
 			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
 			<property name="useActualColumnNames" value="true" />
 			<property name="constructorBased" value="false" />

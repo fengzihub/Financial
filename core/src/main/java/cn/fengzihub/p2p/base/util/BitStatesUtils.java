@@ -7,6 +7,7 @@ package cn.fengzihub.p2p.base.util;
  */
 public class BitStatesUtils {
 	public final static Long OP_BIND_PHONE = 1L << 0; // 用户绑定手机状态码
+	public final static Long OP_BIND_EMAIL = 1L << 1; // 用户绑定邮箱状态码
 
 	/**
 	 * @param states

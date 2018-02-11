@@ -42,4 +42,17 @@ public class PersonalController {
         return jsonResult;
     }
 
+
+    //验证邮箱
+    @RequestMapping("/bindEmail")
+    public String bindEmail(String key, Model model) {
+        try {
+            userinfoService.bindEmail(key);
+            model.addAttribute("success", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("success", false);
+        }
+        return "checkmail_result";
+    }
 }

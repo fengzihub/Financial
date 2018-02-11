@@ -10,6 +10,26 @@
 
     <script type="text/javascript">
         $(function () {
+
+            //邮件验证
+            $("#showBindEmailModal").click(function () {
+                $("#bindEmailModal").modal("show");
+            });
+            $("#bindEmail").click(function () {
+                $("#bindEmailForm").ajaxSubmit({
+                    dataType:"json",
+                    success: function (data) {
+                        if (data.success) {
+                            $.messager.confirm("温馨提示", "邮箱验证码发送成功");
+                            $("#bindEmailModal").modal("hide");
+                        }else {
+                            $.messager.popup(data.msg);
+                        }
+                    }
+
+                });
+            });
+            //手机验证表单
             $("#showBindPhoneModal").click(function () {
                 $("#bindPhoneModal").modal("show");
             });
@@ -25,7 +45,7 @@
                     success: function (data) {
                         $.messager.popup(data.msg);
                         if (data.success) {
-                            $.messager.confirm("温馨提示","发送成功");
+                            $.messager.confirm("温馨提示", "发送成功");
                             var count = 10;
                             var timer = window.setInterval(function () {
                                 count--;
@@ -51,7 +71,7 @@
                     success: function (data) {
                         if (data.success) {
                             window.location.reload();
-                        }else {
+                        } else {
                             $.messager.popup(data.msg);
                         }
                     }
@@ -59,8 +79,10 @@
 
                 });
             });
+            //
 
 
+            //
 
 
         });
@@ -170,12 +192,17 @@
                                     </div>
                                     <div class="el-accoun-auth-right">
                                         <h5>邮箱认证</h5>
-
+                                    <#if userinfo.hasBindEmail>
+                                        <p>
+                                            已认证
+                                            <a href="javascript:;">查看</a>
+                                        </p>
+                                    <#else>
                                         <p>
                                             未绑定
                                             <a href="javascript:;" id="showBindEmailModal">去绑定</a>
                                         </p>
-
+                                    </#if>
                                     </div>
                                     <div class="clearfix"></div>
                                     <p class="info">您可以设置邮箱来接收重要信息</p>
@@ -237,6 +264,35 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="bindEmailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">绑定邮箱</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="bindEmailForm" method="post" action="/sendEmail">
+                    <div class="form-group">
+                        <label for="email" class="col-sm-2 control-label">Email:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="email" name="email"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="bindEmail">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <#--	<#include "common/footer-tpl.ftl" />-->
 </body>
 </html>

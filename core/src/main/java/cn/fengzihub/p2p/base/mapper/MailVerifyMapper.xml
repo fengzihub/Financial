@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.base.mapper.MailVerifyMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.base.domain.MailVerify" >
+    <id column="id" property="id" />
+    <result column="userId" property="userId" />
+    <result column="sendTime" property="sendTime" />
+    <result column="email" property="email" />
+    <result column="uuid" property="uuid" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.base.domain.MailVerify" useGeneratedKeys="true" keyProperty="id" >
+    insert into `mailverify` (userId, sendTime, email, uuid)
+    values (#{userId}, #{sendTime}, #{email}, #{uuid})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.base.domain.MailVerify" >
+    update `mailverify`
+    set userId = #{userId},
+      sendTime = #{sendTime},
+      email = #{email},
+      uuid = #{uuid}
+    where id = #{id}
+  </update>
+
+  <select id="get" resultMap="BaseResultMap" >
+    select id, userId, sendTime, email, uuid
+    from `mailverify`
+    where uuid = #{key}
+  </select>
+
+</mapper>

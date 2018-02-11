@@ -3,6 +3,3 @@
 .gitignore
 p2p2.iml
 
-/core/target/
-/mgrsite/target/
-/website/target/
