@@ -9,6 +9,7 @@
     <result column="idNumber" property="idNumber" />
     <result column="phoneNumber" property="phoneNumber" />
     <result column="email" property="email" />
+    <result column="score" property="score" />
 
 
     <association property="educationBackground" column="educationBackground_id"
@@ -32,10 +33,10 @@
 
   <insert id="insert" parameterType="cn.fengzihub.p2p.base.domain.Userinfo" >
     insert into `userinfo` (id,version, bitState, realName, idNumber, phoneNumber, email,
-      incomeGrade_id, marriage_id, kidCount_id, educationBackground_id, houseCondition_id
+      incomeGrade_id, marriage_id, kidCount_id, educationBackground_id, houseCondition_id,score
       )
     values (#{id},#{version}, #{bitState}, #{realName}, #{idNumber}, #{phoneNumber}, #{email},
-      #{incomeGrade.id}, #{marriage.id}, #{kidCount.id}, #{educationBackground.id}, #{houseCondition.id}
+      #{incomeGrade.id}, #{marriage.id}, #{kidCount.id}, #{educationBackground.id}, #{houseCondition.id},#{score}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.base.domain.Userinfo" >
@@ -46,6 +47,7 @@
       idNumber = #{idNumber},
       phoneNumber = #{phoneNumber},
       email = #{email},
+      score = #{score},
       incomeGrade_id = #{incomeGrade.id},
       marriage_id = #{marriage.id},
       kidCount_id = #{kidCount.id},
@@ -55,7 +57,7 @@
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select id, version, bitState, realName, idNumber, phoneNumber, email, incomeGrade_id,
-    marriage_id, kidCount_id, educationBackground_id, houseCondition_id
+    marriage_id, kidCount_id, educationBackground_id, houseCondition_id,score
     from `userinfo`
     where id = #{id}
   </select>

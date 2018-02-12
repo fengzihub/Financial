@@ -45,5 +45,6 @@ public class BidConst {
 	//发送邮箱间隔时间
 	public static final int EAMIL_VAILD_TIME = 5;
 
-
+	//信用借款风控材料所需最低分数
+	public static final int CREDIT_BORROW_SCORE = 30;
 }

@@ -11,4 +11,10 @@ import lombok.Setter;
 public class QueryObject {
     private Integer currentPage=1;//当前页
     private Integer pageSize=10;
+
+    private int page = 1; //默认
+    private int rows = 5;
+    public int getStart() {
+        return (page - 1) * rows;
+    }
 }

@@ -26,4 +26,11 @@ public class LoginController {
         }
         return jsonResult;
     }
+
+
+    @RequestMapping("/index")
+    public String indexPage() {
+        return "main";
+    }
+
 }

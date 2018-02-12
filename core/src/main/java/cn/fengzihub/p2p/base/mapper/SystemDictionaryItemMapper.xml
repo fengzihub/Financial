@@ -31,4 +31,26 @@
     select id, parentId, title, sequence
     from `systemdictionaryitem`
   </select>
+
+  <sql id="where_sql">
+    <where>
+    </where>
+  </sql>
+
+  <select id="queryForCount" resultType="java.lang.Integer">
+    select count(id)
+    from `systemdictionaryitem`
+    <include refid="where_sql"/>
+  </select>
+  <select id="queryForList" resultMap="BaseResultMap">
+    select id, parentId, title, sequence
+    from `systemdictionaryitem`
+    <include refid="where_sql"/>
+    LIMIT #{start},#{rows}
+  </select>
+  <select id="queryListByParentSn" resultMap="BaseResultMap">
+    select id, parentId, title, sequence
+    from `systemdictionaryitem`
+    where parentId = (select id from systemdictionary where sn =#{sn})
+  </select>
 </mapper>

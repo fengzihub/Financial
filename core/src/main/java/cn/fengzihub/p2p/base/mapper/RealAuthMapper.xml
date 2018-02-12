@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.base.mapper.RealAuthMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.base.domain.RealAuth" >
+    <id column="id" property="id" />
+    <result column="realName" property="realName" />
+    <result column="sex" property="sex" />
+    <result column="bornDate" property="bornDate" />
+    <result column="idNumber" property="idNumber" />
+    <result column="address" property="address" />
+    <result column="state" property="state" />
+    <result column="image1" property="image1" />
+    <result column="image2" property="image2" />
+    <result column="remark" property="remark" />
+    <result column="auditTime" property="auditTime" />
+    <result column="applyTime" property="applyTime" />
+
+
+    <association property="applier" columnPrefix="ap_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+    <association property="auditor" columnPrefix="au_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+
+
+
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.base.domain.RealAuth" useGeneratedKeys="true" keyProperty="id" >
+    insert into `realauth` (realName, sex, bornDate, idNumber, address, state, image1, 
+      image2, remark, auditTime, applyTime, auditor_id, applier_id)
+    values (#{realName}, #{sex}, #{bornDate}, #{idNumber}, #{address}, #{state}, #{image1}, 
+      #{image2}, #{remark}, #{auditTime}, #{applyTime}, #{auditor.id}, #{applier.id})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.base.domain.RealAuth" >
+    update `realauth`
+    set realName = #{realName},
+      sex = #{sex},
+      bornDate = #{bornDate},
+      idNumber = #{idNumber},
+      address = #{address},
+      state = #{state},
+      image1 = #{image1},
+      image2 = #{image2},
+      remark = #{remark},
+      auditTime = #{auditTime},
+      applyTime = #{applyTime},
+      auditor_id = #{auditor.id},
+      applier_id = #{applier.id}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select re.id, re.realName, re.sex, re.bornDate, re.idNumber, re.address,
+    re.state, re.image1, re.image2, re.remark,
+    re.auditTime, re.applyTime,
+    au.id au_id,au.username au_username,
+    ap.id ap_id,ap.username ap_username
+    from `realauth` re join logininfo ap ON
+    re.auditor_id = ap.id LEFT join logininfo au ON
+    re.applier_id = ap.id
+    where re.id = #{id}
+  </select>
+
+</mapper>

@@ -63,7 +63,7 @@
 				value=""/> -->
 		</javaClientGenerator>
 	
-		<table tableName="MailVerify" domainObjectName="MailVerify"  delimitIdentifiers="true">
+		<table tableName="RealAuth" domainObjectName="RealAuth"  delimitIdentifiers="true">
 			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
 			<property name="useActualColumnNames" value="true" />
 			<property name="constructorBased" value="false" />

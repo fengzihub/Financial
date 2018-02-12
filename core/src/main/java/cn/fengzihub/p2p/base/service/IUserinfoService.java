@@ -26,4 +26,10 @@ public interface IUserinfoService {
      * @param key
      */
     void bindEmail(String key);
+
+    /**
+     * 填写个人资料
+     * @param userinfo
+     */
+    void basicInfoSave(Userinfo userinfo);
 }

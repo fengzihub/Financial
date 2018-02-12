@@ -6,10 +6,7 @@
     <result column="sn" property="sn" />
     <result column="title" property="title" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from `systemdictionary`
-    where id = #{id}
-  </delete>
+
   <insert id="insert" parameterType="cn.fengzihub.p2p.base.domain.SystemDictionary" useGeneratedKeys="true" keyProperty="id" >
     insert into `systemdictionary` (sn, title)
     values (#{sn}, #{title})
@@ -28,5 +25,26 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, sn, title
     from `systemdictionary`
+  </select>
+
+  <sql id="where_sql">
+      <where>
+      </where>
+  </sql>
+  <select id="queryPage"  resultMap="BaseResultMap">
+    select id, sn, title
+    from `systemdictionary`
+
+  </select>
+    <select id="queryForCount" resultType="java.lang.Integer">
+      select count(id)
+      from systemdictionary
+      <include refid="where_sql"/>
+    </select>
+  <select id="queryForList" resultMap="BaseResultMap">
+     select id, sn, title
+    from `systemdictionary`
+    <include refid="where_sql"/>
+    LIMIT #{start},#{rows}
   </select>
 </mapper>

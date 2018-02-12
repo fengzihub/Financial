@@ -1,7 +1,7 @@
 [
 	{
 		"id":1,
-		"text":"营销管理",
+		"text":"用户管理",
 		"children":[
 			{
 				"id":11,
@@ -14,27 +14,8 @@
 		]
 	},
 	{
-		"id":2,
-		"text":"客户管理",
-		"children":[
-			{
-				"id":21,
-				"text":"客户信息管理"
-			},{
-				"id":22,
-				"text":"客户跟进历史"
-			},{
-				"id":23,
-				"text":"客户移交记录"
-			},{
-				"id":24,
-				"text":"客户资源池管理"
-			}
-		]
-	},
-	{
 		"id":3,
-		"text":"系统管理",
+		"text":"安全管理",
 		"children":[
 			{
 				"id":31,
@@ -43,35 +24,49 @@
 			},
 			{
 				"id":32,
-				"text":"部门管理",
-				"attributes":{"url":"/department/index"}
+				"text":"系统数据字典目录",
+				"attributes":{"url":"/systemDictionaryIndex"}
+			},
+			{
+				"id":33,
+				"text":"系统数据字典明细",
+				"attributes":{"url":"/systemDictionaryItemIndex"}
 			},
 			{
 				"id":34,
 				"text":"角色管理",
 				"attributes":{"url":"/role/index"}
 			},
+
 			{
 				"id":35,
-				"text":"数据字典",
-				"attributes":{"url":"/systemDictionary/index"}
-			},
-			{
-				"id":36,
-				"text":"系统日志"
+				"text":"系统日志",
+				"attributes":{"url":"/iPLog/index"}
 			}
 		]
 	},
 	{
 		"id":4,
-		"text":"订单合同管理",
+		"text":"审核项目",
 		"children":[
 			{
 				"id":41,
-				"text":"订单管理"	
+				"text":"实名认证审核"
 			},{
 				"id":42,
-				"text":"合同管理"	
+				"text":"视频审核认证"
+			},{
+				"id":43,
+				"text":"认证材料审核"
+			},{
+				"id":44,
+				"text":"身份认证审核"
+			},{
+				"id":45,
+				"text":"满标一审"
+			},{
+				"id":46,
+				"text":"满标二审"
 			}
 		]
 	},{

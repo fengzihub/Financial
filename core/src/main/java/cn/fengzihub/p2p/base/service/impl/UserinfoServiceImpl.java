@@ -95,4 +95,18 @@ public class UserinfoServiceImpl implements IUserinfoService {
         userinfo.setEmail(mailVerify.getEmail());
         this.update(userinfo);
     }
+
+    @Override
+    public void basicInfoSave(Userinfo userinfo) {
+        Userinfo currentUserinfo = this.getCurrent();
+        currentUserinfo.setEducationBackground(userinfo.getEducationBackground());
+        currentUserinfo.setHouseCondition(userinfo.getHouseCondition());
+        currentUserinfo.setIncomeGrade(userinfo.getIncomeGrade());
+        currentUserinfo.setKidCount(userinfo.getKidCount());
+        currentUserinfo.setMarriage(userinfo.getMarriage());
+        if (!currentUserinfo.getIsBasicInfo()) {
+            currentUserinfo.addSate(BitStatesUtils.OP_BASIC_INFO);
+        }
+        this.update(currentUserinfo);
+    }
 }
