@@ -6,6 +6,7 @@
     <result column="version" property="version" />
     <result column="bitState" property="bitState" />
     <result column="realName" property="realName" />
+    <result column="realAuthId" property="realAuthId" />
     <result column="idNumber" property="idNumber" />
     <result column="phoneNumber" property="phoneNumber" />
     <result column="email" property="email" />
@@ -32,10 +33,10 @@
   </resultMap>
 
   <insert id="insert" parameterType="cn.fengzihub.p2p.base.domain.Userinfo" >
-    insert into `userinfo` (id,version, bitState, realName, idNumber, phoneNumber, email,
+    insert into `userinfo` (id,version, bitState, realAuthId,realName, idNumber, phoneNumber, email,
       incomeGrade_id, marriage_id, kidCount_id, educationBackground_id, houseCondition_id,score
       )
-    values (#{id},#{version}, #{bitState}, #{realName}, #{idNumber}, #{phoneNumber}, #{email},
+    values (#{id},#{version}, #{bitState},#{realAuthId}, #{realName}, #{idNumber}, #{phoneNumber}, #{email},
       #{incomeGrade.id}, #{marriage.id}, #{kidCount.id}, #{educationBackground.id}, #{houseCondition.id},#{score}
       )
   </insert>
@@ -45,6 +46,7 @@
       bitState = #{bitState},
       realName = #{realName},
       idNumber = #{idNumber},
+      realAuthId = #{realAuthId},
       phoneNumber = #{phoneNumber},
       email = #{email},
       score = #{score},
@@ -56,7 +58,7 @@
     where id = #{id} and version=#{version}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select id, version, bitState, realName, idNumber, phoneNumber, email, incomeGrade_id,
+    select id, version, bitState, realName,realAuthId, idNumber, phoneNumber, email, incomeGrade_id,
     marriage_id, kidCount_id, educationBackground_id, houseCondition_id,score
     from `userinfo`
     where id = #{id}

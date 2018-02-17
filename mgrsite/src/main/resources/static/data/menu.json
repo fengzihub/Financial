@@ -51,13 +51,16 @@
 		"children":[
 			{
 				"id":41,
-				"text":"实名认证审核"
+				"text":"实名认证审核",
+				"attributes":{"url":"/realAuthList"}
 			},{
 				"id":42,
 				"text":"视频审核认证"
 			},{
 				"id":43,
-				"text":"认证材料审核"
+				"text":"认证材料审核",
+				"attributes":{"url":"/userFileList"}
+
 			},{
 				"id":44,
 				"text":"身份认证审核"

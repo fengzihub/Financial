@@ -56,12 +56,35 @@
     select re.id, re.realName, re.sex, re.bornDate, re.idNumber, re.address,
     re.state, re.image1, re.image2, re.remark,
     re.auditTime, re.applyTime,
-    au.id au_id,au.username au_username,
-    ap.id ap_id,ap.username ap_username
+    ap.id ap_id,ap.username ap_username,
+    au.id au_id,au.username au_username
+    from `realauth` re LEFT join logininfo ap ON
+    re.applier_id = ap.id left join logininfo au ON
+    re.auditor_id = au.id
+    where re.id = #{id}
+  </select>
+
+
+  <sql id="where_sql">
+    <where></where>
+  </sql>
+  <select id="queryForCount" resultType="java.lang.Integer">
+    select count(re.id)
     from `realauth` re join logininfo ap ON
     re.auditor_id = ap.id LEFT join logininfo au ON
     re.applier_id = ap.id
-    where re.id = #{id}
+  </select>
+  <select id="queryForList" resultMap="BaseResultMap">
+    select re.id, re.realName, re.sex, re.bornDate, re.idNumber, re.address,
+    re.state, re.image1, re.image2, re.remark,
+    re.auditTime, re.applyTime,
+    ap.id ap_id,ap.username ap_username,
+    au.id au_id,au.username au_username
+    from `realauth` re LEFT join logininfo ap ON
+    re.applier_id = ap.id left join logininfo au ON
+    re.auditor_id = au.id
+    <include refid="where_sql"/>
+    LIMIT #{start},#{rows}
   </select>
 
 </mapper>

@@ -5,7 +5,8 @@
 		<title>蓝源Eloan-P2P平台</title>
 		<#include "common/links-tpl.ftl" />
 		<link type="text/css" rel="stylesheet" href="/css/account.css" />
-		<script type="text/javascript" src="/js/plugins/uploadify/jquery.uploadify.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="/js/plugins/uploadifive/uploadifive.css" />
+		<script type="text/javascript" src="/js/plugins/uploadifive/jquery.uploadifive.min.js"></script>
 		<script type="text/javascript" src="/js/plugins/jquery.form.js"></script>
 		<style type="text/css">
 			#realAuthForm input ,#realAuthForm select{
@@ -62,7 +63,53 @@
 				trigger:"hover",
 				placement:"top"
 			});
-					
+			
+			//ajax提交表单
+			$("#realAuthForm").ajaxForm(function () {
+				$.messager.confirm("提示","实名认证申请提交成功", function () {
+                    window.location.reload();
+                })
+            });
+
+			//文件上传
+            $("#uploadBtn1").uploadifive({
+                buttonText: '请上传身份证正面',//按钮文本
+                fileObjName: 'image',//表单提交的时候的名字
+                fileType: 'image',//后缀限制
+                fileTypeDesc: "选择身份证正面",
+                uploadScript: '/uploadImage',//提交路径
+                multi: false,//是否多选
+                onInit: function () {
+                    $("#uploadifive-uploadBtn1-queue").hide();
+                },
+				//上传完毕后回显
+                onUploadComplete: function (file,data) {
+                    console.log(data);
+                    $("#uploadImg1").prop("src", data);
+                    $("#uploadImage1").val(data);
+                }
+            });
+
+            $("#uploadBtn2").uploadifive({
+                buttonText: '请上传身份证反面',//按钮文本
+                fileObjName: 'image',//表单提交的时候的名字
+                fileType: 'image',//后缀限制
+                fileTypeDesc: "选择身份证反面",
+                uploadScript: '/uploadImage',//提交路径
+                multi: false,//是否多选
+                onInit: function () {
+                    $("#uploadifive-uploadBtn2-queue").hide();
+                },
+                //上传完毕后回显
+                onUploadComplete: function (file,data) {
+                    console.log(data);
+                    $("#uploadImg2").prop("src", data);
+                    $("#uploadImage2").val(data);
+                }
+            });
+
+
+			
 		});
 		</script>
 	</head>

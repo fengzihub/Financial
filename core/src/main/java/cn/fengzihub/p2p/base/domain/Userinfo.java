@@ -19,6 +19,9 @@ public class Userinfo extends BaseDomain{
     private String phoneNumber;//用户电话
     private String email;//电子邮箱
     private int score; //风控材料分数
+    //实名认证Id
+    private Long realAuthId;
+
     private SystemDictionaryItem incomeGrade;//收入
     private SystemDictionaryItem marriage;//婚姻情况
     private SystemDictionaryItem kidCount;//子女情况
