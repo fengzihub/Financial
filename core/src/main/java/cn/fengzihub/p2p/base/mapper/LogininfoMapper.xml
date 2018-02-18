@@ -19,13 +19,18 @@
     where username = #{username}
   </select>
   <select id="login" resultMap="BaseResultMap">
-    select id,username, password, state
+    select id,username, password, state,userType
     from logininfo
     where username =#{username} and password = #{password} and userType = #{userType}
   </select>
   <select id="queryCountByUserType" resultType="java.lang.Integer">
     select count(id)
-    from logininfo where  userType = #{userType}
+    from logininfo where  userType = #{usertype}
+  </select>
+  <select id="autocomplate" resultType="java.util.Map">
+    select id,username
+    from logininfo
+    where username like concat(#{keyword},'%') and userType = #{usertype}
   </select>
 
 </mapper>

@@ -63,7 +63,7 @@
 				value=""/> -->
 		</javaClientGenerator>
 	
-		<table tableName="UserFile" domainObjectName="UserFile"  delimitIdentifiers="true">
+		<table tableName="VedioAuth" domainObjectName="VedioAuth"  delimitIdentifiers="true">
 			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
 			<property name="useActualColumnNames" value="true" />
 			<property name="constructorBased" value="false" />

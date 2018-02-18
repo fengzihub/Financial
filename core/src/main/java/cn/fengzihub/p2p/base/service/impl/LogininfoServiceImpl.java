@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018.02.07.
@@ -106,6 +108,11 @@ public class LogininfoServiceImpl implements ILogininfoService {
             logininfoMapper.insert(logininfo);
         }
 
+    }
+
+    @Override
+    public List<Map<String, Object>> autocomplate(String keyword) {
+        return logininfoMapper.autocomplate(keyword,Logininfo.USERTYPE_USER);
     }
 
 

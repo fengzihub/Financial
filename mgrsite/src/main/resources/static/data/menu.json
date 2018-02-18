@@ -55,7 +55,8 @@
 				"attributes":{"url":"/realAuthList"}
 			},{
 				"id":42,
-				"text":"视频审核认证"
+				"text":"视频审核认证",
+				"attributes":{"url":"/vedioAuthList"}
 			},{
 				"id":43,
 				"text":"认证材料审核",

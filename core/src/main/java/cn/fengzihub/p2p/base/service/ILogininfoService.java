@@ -2,6 +2,9 @@ package cn.fengzihub.p2p.base.service;
 
 import cn.fengzihub.p2p.base.domain.Logininfo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Administrator on 2018.02.07.
  */
@@ -25,4 +28,6 @@ public interface ILogininfoService {
      * 初始化后台管理员
      */
     void initAdmin();
+
+    List<Map<String,Object>> autocomplate(String keyword);
 }

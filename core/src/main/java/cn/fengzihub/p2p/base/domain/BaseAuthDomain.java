@@ -1,5 +1,6 @@
 package cn.fengzihub.p2p.base.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class BaseAuthDomain extends BaseDomain {
     protected int state;//审核状态
     protected Logininfo auditor;//审核人呢
     protected Date applyTime;//申请时间
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
     protected Date auditTime;//审核时间
     protected String remark;//备注
 

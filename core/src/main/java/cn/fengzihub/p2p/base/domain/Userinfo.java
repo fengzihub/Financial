@@ -46,7 +46,6 @@ public class Userinfo extends BaseDomain{
         return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_VEDIO_AUTH);
     }
 
-
     public void addSate(Long state) {
          this.bitState = BitStatesUtils.addState(this.bitState, state);
 
