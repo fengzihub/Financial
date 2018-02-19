@@ -64,10 +64,12 @@
 
 			},{
 				"id":44,
-				"text":"身份认证审核"
+				"text":"发标前审核",
+				"attributes":{"url":"/bidRequestList"}
 			},{
 				"id":45,
 				"text":"满标一审"
+
 			},{
 				"id":46,
 				"text":"满标二审"

@@ -10,6 +10,8 @@
     <artifactId>website</artifactId>
     <packaging>jar</packaging>
 
+    <name>website</name>
+    <url>http://maven.apache.org</url>
 
     <dependencies>
         <dependency>

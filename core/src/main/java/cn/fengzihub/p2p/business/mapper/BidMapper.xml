@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.BidMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.Bid" >
+    <id column="id" property="id" />
+    <result column="actualRate" property="actualRate" />
+    <result column="availableAmount" property="availableAmount" />
+    <result column="bidRequestId" property="bidRequestId" />
+    <result column="bidTime" property="bidTime" />
+    <result column="bidRequestTitle" property="bidRequestTitle" />
+    <result column="bidRequestState" property="bidRequestState" />
+
+
+    <association property="bidUser" columnPrefix="bu_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.Bid" useGeneratedKeys="true" keyProperty="id" >
+    insert into `bid` (actualRate, availableAmount, bidRequestId, bidUser_id, bidTime, 
+      bidRequestTitle, bidRequestState)
+    values (#{actualRate}, #{availableAmount}, #{bidRequestId}, #{bidUser.id}, #{bidTime},
+      #{bidRequestTitle}, #{bidRequestState})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.Bid" >
+    update `bid`
+    set actualRate = #{actualRate},
+      availableAmount = #{availableAmount},
+      bidRequestId = #{bidRequestId},
+      bidUser_id = #{bidUser.id},
+      bidTime = #{bidTime},
+      bidRequestTitle = #{bidRequestTitle},
+      bidRequestState = #{bidRequestState}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select b.id, b.actualRate, b.availableAmount, b.bidRequestId,
+    b.bidUser_id, b.bidTime, b.bidRequestTitle,b.bidRequestState,
+    bu.id bu_id,bu.usernam bu_username
+    from `bid` b join logininfo bu on b.bidUser_id = bu.id
+    where b.id = #{id}
+  </select>
+
+
+  <select id="queryListByBidRequestId" resultMap="BaseResultMap">
+     select b.id, b.actualRate, b.availableAmount, b.bidRequestId,
+    b.bidUser_id, b.bidTime, b.bidRequestTitle,b.bidRequestState,
+    bu.id bu_id,bu.username bu_username
+    from `bid` b join logininfo bu on b.bidUser_id = bu.id
+    where b.bidRequestId = #{bidRequestId}
+  </select>
+</mapper>

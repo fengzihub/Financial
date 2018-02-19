@@ -54,4 +54,6 @@ public interface IUserFileService {
      * @param remark
      */
     void audit(Long id, int state, int score, String remark);
+
+    List<UserFile> queryBuUserId(Long id);
 }

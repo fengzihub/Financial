@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.BidRequestMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.BidRequest" >
+    <id column="id" property="id" />
+    <result column="version" property="version" />
+    <result column="bidRequestType" property="bidRequestType" />
+    <result column="bidRequestState" property="bidRequestState" />
+    <result column="bidRequestAmount" property="bidRequestAmount" />
+    <result column="currentRate" property="currentRate" />
+    <result column="monthes2Return" property="monthes2Return" />
+    <result column="bidCount" property="bidCount" />
+    <result column="totalRewardAmount" property="totalRewardAmount" />
+    <result column="currentSum" property="currentSum" />
+    <result column="title" property="title" />
+    <result column="description" property="description" />
+    <result column="note" property="note" />
+    <result column="disableDate" property="disableDate" />
+    <result column="disableDays" property="disableDays" />
+    <result column="minBidAmount" property="minBidAmount" />
+    <result column="applyTime" property="applyTime" />
+    <result column="publishTime" property="publishTime" />
+    <result column="returnType" property="returnType" />
+
+
+    <association property="createUser" columnPrefix="cu_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+
+    <collection property="bids" column="id" ofType="cn.fengzihub.p2p.business.domain.Bid"
+                select="cn.fengzihub.p2p.business.mapper.BidMapper.queryListByBidRequestId"/>
+
+
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.BidRequest" useGeneratedKeys="true" keyProperty="id" >
+    insert into `bidrequest` (version, bidRequestType, bidRequestState, bidRequestAmount, currentRate, 
+      monthes2Return, bidCount, totalRewardAmount, currentSum, title, 
+      description, note, disableDate, createUser_id, disableDays, minBidAmount, 
+      applyTime, publishTime, returnType)
+    values (#{version}, #{bidRequestType}, #{bidRequestState}, #{bidRequestAmount}, #{currentRate}, 
+      #{monthes2Return}, #{bidCount}, #{totalRewardAmount}, #{currentSum}, #{title}, 
+      #{description}, #{note}, #{disableDate}, #{createUser.id}, #{disableDays}, #{minBidAmount},
+      #{applyTime}, #{publishTime}, #{returnType})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.BidRequest" >
+    update `bidrequest`
+    set version = version+1,
+      bidRequestType = #{bidRequestType},
+      bidRequestState = #{bidRequestState},
+      bidRequestAmount = #{bidRequestAmount},
+      currentRate = #{currentRate},
+      monthes2Return = #{monthes2Return},
+      bidCount = #{bidCount},
+      totalRewardAmount = #{totalRewardAmount},
+      currentSum = #{currentSum},
+      title = #{title},
+      description = #{description},
+      note = #{note},
+      disableDate = #{disableDate},
+      createUser_id = #{createUser.id},
+      disableDays = #{disableDays},
+      minBidAmount = #{minBidAmount},
+      applyTime = #{applyTime},
+      publishTime = #{publishTime},
+      returnType = #{returnType}
+    where id = #{id} and version=#{version}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select br.id, br.version, br.bidRequestType, br.bidRequestState,br.bidRequestAmount, br.currentRate,
+    br.monthes2Return, br.bidCount, br.totalRewardAmount, br.currentSum, br.title, br.description, br.note,
+    br.disableDate, br.createUser_id, br.disableDays, br.minBidAmount, br.applyTime, br.publishTime, br.returnType,
+    cu.id cu_id,cu.username cu_username
+    from `bidrequest` br join logininfo cu on br.createUser_id = cu.id
+    where br.id = #{id}
+  </select>
+
+  <sql id="where_sql">
+    <where>
+      <if test="bidRequestState >-1">
+        and bidRequestState = #{bidRequestState}
+      </if>
+    </where>
+  </sql>
+  <select id="queryForCount" resultType="java.lang.Integer">
+    select count(id)
+    from bidrequest
+    <include refid="where_sql"/>
+  </select>
+  <select id="queryForList" resultMap="BaseResultMap">
+    select br.id, br.version, br.bidRequestType, br.bidRequestState,br.bidRequestAmount, br.currentRate,
+    br.monthes2Return, br.bidCount, br.totalRewardAmount, br.currentSum, br.title, br.description, br.note,
+    br.disableDate, br.createUser_id, br.disableDays, br.minBidAmount, br.applyTime, br.publishTime, br.returnType,
+    cu.id cu_id,cu.username cu_username
+    from `bidrequest` br join logininfo cu on br.createUser_id = cu.id
+    <include refid="where_sql"/>
+    LIMIT  #{start},#{rows}
+  </select>
+
+</mapper>

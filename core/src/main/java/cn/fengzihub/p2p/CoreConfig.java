@@ -14,6 +14,6 @@ import org.springframework.context.annotation.PropertySources;
         @PropertySource("classpath:email.properties")
 })
 
-@MapperScan("cn.fengzihub.p2p.base.mapper")
+@MapperScan({"cn.fengzihub.p2p.base.mapper","cn.fengzihub.p2p.business.mapper"})
 public class CoreConfig {
 }

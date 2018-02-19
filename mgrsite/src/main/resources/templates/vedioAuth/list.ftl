@@ -78,6 +78,7 @@
         method: 'get',
         valueField: 'username',
         textField: 'username',
+        //设置为'remote'时，下拉列表框将会从服务器加载数据。
         mode: "remote",
         onChange: function (values, o) {
             if (values != "") {
@@ -158,60 +159,7 @@
     });
 
     var cmdObj = {
-        toAdd: function () {
-            emp_from.form("clear");
-            emp_dia.dialog("setTitle", '新增');
-            emp_dia.dialog("open");
-        },
-        toDelete: function () {
-            var rowData = emp_dg.datagrid("getSelected");
-            if (!rowData) {
-                $.messager.alert("温馨提示", "未选中一行数据", "error");
-                return;
-            } else {
-                $.messager.confirm("温馨提示", "你确定删除", function (yes) {
-                    if (yes) {
-                        $.post("/systemDictionaryDelete?id=" + rowData.id, function (data) {
-                            if (!data.success) {
-                                $.messager.alert("温馨提示", data.msg, "error");
-                                return;
-                            } else {
-                                $.messager.alert("温馨提示", data.msg, "info", function () {
-                                    emp_dia.dialog("close");
-                                    emp_dg.datagrid("reload");
-                                });
-                            }
-                        })
-                    }
-                })
-            }
-        },
 
-        toEdit: function () {
-            var rowData = emp_dg.datagrid("getSelected");
-            //console.log(rowData);
-            if (!rowData) {
-                $.messager.alert("温馨提示", "未选中一行数据", "error");
-                return;
-            }
-            emp_from.form("clear");
-
-            //审核回显
-            $("#id").val(rowData.id);
-            $("#username").val(rowData.applier.username);
-            $("#realName").val(rowData.realName);
-            $("#idNumber").val(rowData.idNumber);
-
-            $("#remark").val(rowData.remark);
-
-            //emp_from.form("load", rowData);
-            emp_dia.dialog("setTitle", '审核');
-            emp_dia.dialog("open");
-        },
-        //审核提交按钮
-        c1: function () {
-            emp_dia.dialog("close");
-        },
         search: function () {
             emp_dg.datagrid('load', {
                 keyword: $('input[name="keyword"]').val()

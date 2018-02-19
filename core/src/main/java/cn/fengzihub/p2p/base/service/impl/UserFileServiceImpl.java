@@ -112,4 +112,10 @@ public class UserFileServiceImpl implements IUserFileService {
             this.update(userFile);
         }
     }
+
+    @Override
+    public List<UserFile> queryBuUserId(Long userId) {
+
+        return userFileMapper.queryByUserId(userId,UserFile.STATE_PASS);
+    }
 }

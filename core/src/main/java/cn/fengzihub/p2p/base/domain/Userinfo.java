@@ -45,10 +45,14 @@ public class Userinfo extends BaseDomain{
     public boolean getIsVedioAuth() {
         return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_VEDIO_AUTH);
     }
+    public boolean gethasBidRequestProcess() {
+        return BitStatesUtils.hasState(this.bitState, BitStatesUtils.HAS_BIDREQUEST_PROCESS);
+    }
 
     public void addSate(Long state) {
          this.bitState = BitStatesUtils.addState(this.bitState, state);
-
-
+    }
+    public void removeSate(Long state) {
+         this.bitState = BitStatesUtils.removeState(this.bitState, state);
     }
 }

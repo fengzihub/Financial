@@ -22,4 +22,7 @@ public interface UserFileMapper {
 
     List<UserFile> queryForList(UserFileQueryObject qo);
 
+    List<UserFile> queryByUserId(@Param("userId") Long userId, @Param("state") int state);
+
+
 }

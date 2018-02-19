@@ -11,6 +11,7 @@ public class BitStatesUtils {
 	public final static Long OP_BASIC_INFO = 1L << 2; // 用户基本信息状态码
 	public final static Long OP_REAL_AUTH = 1L << 3; // 用户实名认证状态码
 	public final static Long OP_VEDIO_AUTH = 1L << 4; //用户视频认证状态码
+	public final static Long HAS_BIDREQUEST_PROCESS = 1L << 5; //用户正在借款的状态
 
 	/**
 	 * @param states
