@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.AccountFlowMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.AccountFlow" >
+    <id column="id" property="id" />
+    <result column="actionType" property="actionType" />
+    <result column="amount" property="amount" />
+    <result column="remark" property="remark" />
+    <result column="usableAmount" property="usableAmount" />
+    <result column="freezedAmount" property="freezedAmount" />
+    <result column="tradeTime" property="tradeTime" />
+    <result column="accountId" property="accountId" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.AccountFlow" useGeneratedKeys="true" keyProperty="id" >
+    insert into `accountflow` (actionType, amount, remark, usableAmount, freezedAmount, tradeTime, 
+      accountId)
+    values (#{actionType}, #{amount}, #{remark}, #{usableAmount}, #{freezedAmount}, #{tradeTime}, 
+      #{accountId})
+  </insert>
+
+</mapper>

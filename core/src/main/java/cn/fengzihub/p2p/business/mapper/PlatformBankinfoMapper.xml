@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.PlatformBankinfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.PlatformBankinfo" >
+    <id column="id" property="id" />
+    <result column="bankName" property="bankName" />
+    <result column="accountNumber" property="accountNumber" />
+    <result column="bankForkName" property="bankForkName" />
+    <result column="accountName" property="accountName" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.PlatformBankinfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into `platformbankinfo` (bankName, accountNumber, bankForkName, accountName)
+    values (#{bankName}, #{accountNumber}, #{bankForkName}, #{accountName})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.PlatformBankinfo" >
+    update `platformbankinfo`
+    set bankName = #{bankName},
+      accountNumber = #{accountNumber},
+      bankForkName = #{bankForkName},
+      accountName = #{accountName}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, bankName, accountNumber, bankForkName, accountName
+    from `platformbankinfo`
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, bankName, accountNumber, bankForkName, accountName
+    from `platformbankinfo`
+  </select>
+
+  <sql id="where_sql">
+    <where>
+    </where>
+  </sql>
+  <select id="queryForCount" resultType="int">
+    select count(id)
+    from platformbankinfo
+  </select>
+  <select id="queryForList" resultMap="BaseResultMap">
+    select id, bankName, accountNumber, bankForkName, accountName
+    from `platformbankinfo`
+    <include refid="where_sql"/>
+    Limit #{start},#{rows}
+  </select>
+
+
+</mapper>

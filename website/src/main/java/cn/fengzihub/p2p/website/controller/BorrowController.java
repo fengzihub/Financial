@@ -2,6 +2,8 @@ package cn.fengzihub.p2p.website.controller;
 
 import cn.fengzihub.p2p.base.domain.Userinfo;
 import cn.fengzihub.p2p.base.service.IAccountService;
+import cn.fengzihub.p2p.base.service.IRealAuthService;
+import cn.fengzihub.p2p.base.service.IUserFileService;
 import cn.fengzihub.p2p.base.service.IUserinfoService;
 import cn.fengzihub.p2p.base.util.BidConst;
 import cn.fengzihub.p2p.base.util.UserContext;
@@ -25,7 +27,10 @@ public class BorrowController {
     private IUserinfoService userinfoService;
     @Autowired
     private IBidRequestService bidRequestService;
-
+    @Autowired
+    private IRealAuthService realAuthService;
+    @Autowired
+    private IUserFileService userFileService;
     @RequestMapping("/borrow")
     public String borrow(Model model) {
         //判断是否登录
@@ -69,5 +74,33 @@ public class BorrowController {
         bidRequestService.apply(bidRequest);
         return "redirect:/borrowInfo";
     }
+
+
+    @RequestMapping("/borrow_info")
+    public String borrowInfoPage(Long id,Model model) {
+        BidRequest bidRequest = bidRequestService.get(id);
+        if (bidRequest != null) {
+            Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
+            model.addAttribute("userInfo", userinfo);
+            model.addAttribute("bidRequest", bidRequest);
+            model.addAttribute("realAuth",realAuthService.get(userinfo.getRealAuthId()));
+            model.addAttribute("userFiles", userFileService.queryBuUserId(bidRequest.getCreateUser().getId()));
+            //判断是否登录
+            if (UserContext.getCurrent() == null) {
+                model.addAttribute("self", false);
+            } else {
+                //判断当前登录用户是否是借款人
+                if (UserContext.getCurrent().getId().equals(bidRequest.getCreateUser().getId())) {
+                    model.addAttribute("self", true);
+                } else {
+                    model.addAttribute("self", false);
+                    model.addAttribute("account", accountService.getCurrent());
+                }
+            }
+        }
+        return "/borrow_info";
+    }
+
+
 
 }

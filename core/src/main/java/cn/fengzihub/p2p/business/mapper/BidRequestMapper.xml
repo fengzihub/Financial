@@ -98,4 +98,30 @@
     LIMIT  #{start},#{rows}
   </select>
 
+
+
+  <sql id="where_sql2">
+    <where>
+      <if test="bidRequestState>-1">
+        and  br.bidRequestState = #{bidRequestState}
+      </if>
+      <if test="states!=null">
+        and  br.bidRequestState in
+        <foreach collection="states" open="(" item="item" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </sql>
+  <select id="pageInfoPage" resultMap="BaseResultMap">
+    select br.id, br.version, br.bidRequestType, br.bidRequestState, br.bidRequestAmount, br.currentRate,
+    br.monthes2Return, br.bidCount, br.totalRewardAmount, br.currentSum, br.title, br.description, br.note,
+    br.disableDate, br.createuser_id, br.disableDays, br.minBidAmount, br.applyTime,br.publishTime, br.returnType,
+    cu.id cu_id,cu.username cu_username
+    from `bidrequest` br join logininfo cu ON br.createuser_id=cu.id
+    <include refid="where_sql2"/>
+    <if test="orderByCondition!=null">
+      ${orderByCondition}
+    </if>
+  </select>
 </mapper>

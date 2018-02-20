@@ -82,5 +82,48 @@ public class BidConst {
 	public static final BigDecimal MONEY_WITHDRAW_CHARGEFEE = new BigDecimal(
 			"2.0000");// 系统提现手续费
 
+	/** =============================账户流水类型================================ */
+	public final static int ACCOUNT_ACTIONTYPE_RECHARGE_OFFLINE = 0;// 资金流水类别：线下充值
+	// 可用余额增加
+	public final static int ACCOUNT_ACTIONTYPE_WITHDRAW = 1;// 资金流水类别：提现成功
+	// 冻结金额减少
+	public final static int ACCOUNT_ACTIONTYPE_BIDREQUEST_SUCCESSFUL = 2;// 资金流水类别：成功借款
+	// 可用余额增加
+	public final static int ACCOUNT_ACTIONTYPE_BID_SUCCESSFUL = 3;// 资金流水类别：成功投标
+	// 冻结金额减少
+	public final static int ACCOUNT_ACTIONTYPE_RETURN_MONEY = 4;// 资金流水类别：还款
+	// 可用余额减少
+	public final static int ACCOUNT_ACTIONTYPE_CALLBACK_MONEY = 5;// 资金流水类别：回款
+	// 可用余额增加
+	public final static int ACCOUNT_ACTIONTYPE_CHARGE = 6;// 资金流水类别：支付平台管理费
+	// 可用余额减少
+	public final static int ACCOUNT_ACTIONTYPE_INTEREST_SHARE = 7;// 资金流水类别：利息管理费
+	// 可用余额减少
+	public final static int ACCOUNT_ACTIONTYPE_WITHDRAW_MANAGE_CHARGE = 8;// 资金流水类别：提现手续费
+	// 可用余额减少
+	public final static int ACCOUNT_ACTIONTYPE_RECHARGE_CHARGE = 9;// 资金流水类别：充值手续费
+	// 可用余额减少
+	public final static int ACCOUNT_ACTIONTYPE_BID_FREEZED = 10;// 资金流水类别：投标冻结金额
+	// 冻结金额增加 可用余额减少
+	public final static int ACCOUNT_ACTIONTYPE_BID_UNFREEZED = 11;// 资金流水类别：取消投标冻结金额
+	// 标审核失败
+	// 冻结金额减少
+	// 可用余额增加
+	public final static int ACCOUNT_ACTIONTYPE_WITHDRAW_FREEZED = 12;// 资金流水类别：提现申请冻结金额
+	// 冻结金额增加
+	// 可用余额减少
+	public final static int ACCOUNT_ACTIONTYPE_WITHDRAW_UNFREEZED = 13;// 资金流水类别:提现申请失败取消冻结金额
+	// 冻结金额减少
+	// 可用余额增加
+
+	/** ============系统账户流水类型============= */
+	public final static int SYSTEM_ACCOUNT_ACTIONTYPE_MANAGE_CHARGE = 1;// 系统账户收到账户管理费（借款管理费）
+	public final static int SYSTEM_ACCOUNT_ACTIONTYPE_INTREST_MANAGE_CHARGE = 2;// 系统账户收到利息管理费
+	public final static int SYSTEM_ACCOUNT_ACTIONTYPE_WITHDRAW_MANAGE_CHARGE = 3;// 系统账户收到提现手续费
+
+	/** =========还款状态=============== */
+	public final static int PAYMENT_STATE_NORMAL = 0; // 正常待还
+	public final static int PAYMENT_STATE_DONE = 1; // 已还
+
 
 }

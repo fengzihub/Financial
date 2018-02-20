@@ -11,4 +11,8 @@ import lombok.Setter;
 @Setter
 public class BidRequestQueryObject extends QueryObject {
     private int bidRequestState = -1;
+
+    private int[] states;
+
+    private String orderByCondition;
 }

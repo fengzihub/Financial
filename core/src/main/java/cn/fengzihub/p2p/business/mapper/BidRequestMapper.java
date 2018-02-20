@@ -15,4 +15,6 @@ public interface BidRequestMapper {
     int queryForCount(BidRequestQueryObject qo);
 
     List<BidRequest> queryForList(BidRequestQueryObject qo);
+
+    List pageInfoPage(BidRequestQueryObject qo);
 }

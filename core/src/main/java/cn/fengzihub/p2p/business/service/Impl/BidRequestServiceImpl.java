@@ -15,6 +15,8 @@ import cn.fengzihub.p2p.business.query.BidRequestQueryObject;
 import cn.fengzihub.p2p.business.service.IBidRequestAuditHistoryService;
 import cn.fengzihub.p2p.business.service.IBidRequestService;
 import cn.fengzihub.p2p.business.util.CalculatetUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,5 +153,12 @@ public class BidRequestServiceImpl implements IBidRequestService {
             bidRequestAuditHistoryService.save(brh);
             this.update(bidRequest);
         }
+    }
+
+    @Override
+    public PageInfo pageInfoPage(BidRequestQueryObject qo) {
+        PageHelper.startPage(qo.getCurrentPage(), qo.getPageSize());
+        List list = bidRequestMapper.pageInfoPage(qo);
+        return new PageInfo(list);
     }
 }

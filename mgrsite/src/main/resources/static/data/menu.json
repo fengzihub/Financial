@@ -14,7 +14,7 @@
 		]
 	},
 	{
-		"id":3,
+		"id":2,
 		"text":"安全管理",
 		"children":[
 			{
@@ -33,12 +33,6 @@
 				"attributes":{"url":"/systemDictionaryItemIndex"}
 			},
 			{
-				"id":34,
-				"text":"角色管理",
-				"attributes":{"url":"/role/index"}
-			},
-
-			{
 				"id":35,
 				"text":"系统日志",
 				"attributes":{"url":"/iPLog/index"}
@@ -46,7 +40,7 @@
 		]
 	},
 	{
-		"id":4,
+		"id":3,
 		"text":"审核项目",
 		"children":[
 			{
@@ -61,7 +55,6 @@
 				"id":43,
 				"text":"认证材料审核",
 				"attributes":{"url":"/userFileList"}
-
 			},{
 				"id":44,
 				"text":"发标前审核",
@@ -73,10 +66,25 @@
 			},{
 				"id":46,
 				"text":"满标二审"
+			},{
+				"id":47,
+				"text":"线下充值审核",
+				"attributes":{"url":"/rechargeofflineList"}
 			}
 		]
 	},{
-		"id":5,
-		"text":"售后管理"
-	}
+	"id":5,
+	"text":"系统",
+	"children":[
+		{
+			"id":21,
+			"text":"平台账户",
+			"attributes":{"url":"/platformBankinfoList"}
+
+		},{
+			"id":22,
+			"text":"（潜在）客户开发计划"
+		}
+	]
+}
 ]

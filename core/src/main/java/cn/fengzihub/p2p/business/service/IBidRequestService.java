@@ -4,6 +4,7 @@ import cn.fengzihub.p2p.base.domain.Userinfo;
 import cn.fengzihub.p2p.base.util.PageResult;
 import cn.fengzihub.p2p.business.domain.BidRequest;
 import cn.fengzihub.p2p.business.query.BidRequestQueryObject;
+import com.github.pagehelper.PageInfo;
 
 /**
  * Created by Administrator on 2018.02.19.
@@ -36,4 +37,6 @@ public interface IBidRequestService {
      * @param remark
      */
     void publishAudit(Long id, int state, String remark);
+
+    PageInfo pageInfoPage(BidRequestQueryObject qo);
 }

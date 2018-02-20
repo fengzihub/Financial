@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.RechargeOfflineMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.RechargeOffline" >
+    <id column="id" property="id" />
+    <result column="state" property="state" />
+    <result column="remark" property="remark" />
+    <result column="auditTime" property="auditTime" />
+    <result column="applyTime" property="applyTime" />
+    <result column="tradeCode" property="tradeCode" />
+    <result column="tradeTime" property="tradeTime" />
+    <result column="amount" property="amount" />
+    <result column="note" property="note" />
+
+    <association property="applier" columnPrefix="ap_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+    <association property="auditor" columnPrefix="au_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+    <association property="bankInfo" columnPrefix="po_" javaType="cn.fengzihub.p2p.business.domain.PlatformBankinfo">
+      <id column="id" property="id"/>
+      <result column="bankName" property="bankName"/>
+      <result column="accountNumber" property="accountNumber"/>
+      <result column="bankForkName" property="bankForkName"/>
+      <result column="accountName" property="accountName"/>
+    </association>
+
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.RechargeOffline" useGeneratedKeys="true" keyProperty="id" >
+    insert into `rechargeoffline` (state, remark, auditTime, applyTime, auditor_id, applier_id, 
+      tradeCode, tradeTime, amount, note, bankInfo_id)
+    values (#{state}, #{remark}, #{auditTime}, #{applyTime}, #{auditor.id}, #{applier.id},
+      #{tradeCode}, #{tradeTime}, #{amount}, #{note}, #{bankInfo.id})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.RechargeOffline" >
+    update `rechargeoffline`
+    set state = #{state},
+      remark = #{remark},
+      auditTime = #{auditTime},
+      applyTime = #{applyTime},
+      auditor_id = #{auditor.id},
+      applier_id = #{applier.id},
+      tradeCode = #{tradeCode},
+      tradeTime = #{tradeTime},
+      amount = #{amount},
+      note = #{note},
+      bankInfo_id = #{bankInfo.id}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select ro.id, ro.state, ro.remark, ro.auditTime, ro.applyTime, ro.auditor_id, ro.applier_id, ro.tradeCode,
+    ro.tradeTime, ro.amount, ro.note, ro.bankInfo_id,
+    ap.id ap_id,ap.username ap_username,
+    au.id au_id,au.username au_username,
+    po.id po_id,po.bankName po_bankName,po.accountNumber po_accountNumber,
+    po.bankForkName po_bankForkName,po.accountName po_accountName
+    from `rechargeoffline` ro join logininfo ap ON ro.applier_id=ap.id
+    LEFT join logininfo au on ro.auditor_id=au.id
+    left join PlatformBankinfo po on ro.bankInfo_id = po.id
+    where ro.id = #{id}
+  </select>
+
+
+  <sql id="where_sql">
+    <where>
+    </where>
+  </sql>
+  <select id="queryForCount" resultType="int">
+    select count(id)
+    from rechargeoffline
+    <include refid="where_sql"/>
+  </select>
+  <select id="queryForList" resultMap="BaseResultMap">
+    select ro.id, ro.state, ro.remark, ro.auditTime, ro.applyTime, ro.auditor_id, ro.applier_id, ro.tradeCode,
+    ro.tradeTime, ro.amount, ro.note, ro.bankInfo_id,
+    ap.id ap_id,ap.username ap_username,
+    au.id au_id,au.username au_username,
+    po.id po_id,po.bankName po_bankName,po.accountNumber po_accountNumber,
+    po.bankForkName po_bankForkName,po.accountName po_accountName
+    from `rechargeoffline` ro join logininfo ap ON ro.applier_id=ap.id
+    LEFT join logininfo au on ro.auditor_id=au.id
+    left join PlatformBankinfo po on ro.bankInfo_id = po.id
+    <include refid="where_sql"/>
+    LIMIT #{start},#{rows}
+  </select>
+
+
+</mapper>
