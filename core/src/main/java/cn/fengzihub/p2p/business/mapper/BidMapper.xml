@@ -50,4 +50,9 @@
     from `bid` b join logininfo bu on b.bidUser_id = bu.id
     where b.bidRequestId = #{bidRequestId}
   </select>
+
+
+  <update id="updateState">
+    UPDATE bid set bidRequestState =#{bidRequestState} where bidRequestId = #{bidRequestId}
+  </update>
 </mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.PaymentScheduleMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.PaymentSchedule" >
+    <id column="id" property="id" />
+    <result column="deadLine" property="deadLine" />
+    <result column="payDate" property="payDate" />
+    <result column="totalAmount" property="totalAmount" />
+    <result column="principal" property="principal" />
+    <result column="interest" property="interest" />
+    <result column="monthIndex" property="monthIndex" />
+    <result column="state" property="state" />
+    <result column="bidRequestType" property="bidRequestType" />
+    <result column="returnType" property="returnType" />
+    <result column="bidRequestId" property="bidRequestId" />
+    <result column="bidRequestTitle" property="bidRequestTitle" />
+
+
+    <association property="borrowUser" columnPrefix="ap_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+
+    <collection property="details" ofType="cn.fengzihub.p2p.business.domain.PaymentScheduleDetail"
+                column="id" select="cn.fengzihub.p2p.business.mapper.PaymentScheduleDetailMapper.selectByPaymentScheduleId"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.PaymentSchedule" useGeneratedKeys="true" keyProperty="id" >
+    insert into `paymentschedule` (deadLine, payDate, totalAmount, principal, interest, monthIndex, 
+      state, bidRequestType, returnType, bidRequestId, borrowUser_id, 
+      bidRequestTitle)
+    values (#{deadLine}, #{payDate}, #{totalAmount}, #{principal}, #{interest}, #{monthIndex}, 
+      #{state}, #{bidRequestType}, #{returnType}, #{bidRequestId}, #{borrowUser.id},
+      #{bidRequestTitle})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.PaymentSchedule" >
+    update `paymentschedule`
+    set deadLine = #{deadLine},
+      payDate = #{payDate},
+      totalAmount = #{totalAmount},
+      principal = #{principal},
+      interest = #{interest},
+      monthIndex = #{monthIndex},
+      state = #{state},
+      bidRequestType = #{bidRequestType},
+      returnType = #{returnType},
+      bidRequestId = #{bidRequestId},
+      borrowUser_id = #{borrowUser.id},
+      bidRequestTitle = #{bidRequestTitle}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select ps.id, ps.deadLine, ps.payDate, ps.totalAmount, ps.principal, ps.interest, ps.monthIndex, ps.state,
+    ps.bidRequestType, ps.returnType, ps.bidRequestId, ps.borrowUser_id, ps.bidRequestTitle,
+    ap.id ap_id,ap.username ap_username
+    from `paymentschedule` ps join logininfo ap ON ps.borrowUser_id=ap.id
+    where ps.id = #{id}
+  </select>
+
+</mapper>

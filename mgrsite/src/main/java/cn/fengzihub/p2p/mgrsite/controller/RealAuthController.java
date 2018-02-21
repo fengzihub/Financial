@@ -33,9 +33,7 @@ public class RealAuthController {
     @RequestMapping("/realAuth_audit")
     @ResponseBody
     public JSONResult realAuthAudit(Long id,int state,String remark) {
-        System.out.println(id+"id");
-        System.out.println(state+"state");
-        System.out.println(remark+"remark");
+
         JSONResult jsonResult = new JSONResult();
         try {
             realAuthService.auth(id,state,remark);

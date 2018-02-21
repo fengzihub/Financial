@@ -139,9 +139,9 @@
             {field: 'amount', title: '充值金额', width: 100, align: 'center'},
             {
                 field: 'bankInfo', title: '平台账号', width: 100, align: 'center', formatter: function (value, row, index) {
-                console.log(row);
-                if (value == 1) {
-                    return "(工商银行)";
+                console.log(value);
+                if (value.id == 1) {
+                    return "(工商银行)"+row.bankInfo.accountNumber;
                 } else {
                     return "(农业银行)"+row.bankInfo.accountNumber;
                 }

@@ -32,19 +32,20 @@ public class BidRequestController {
     private IUserFileService userFileService;
     @Autowired
     private IRealAuthService realAuthService;
+
     @RequestMapping("/bidRequestList")
     public String bidRequestList() {
-        return "/bidRequest/audit1";
+        return "/bidRequest/publish_audit";
     }
 
-    @RequestMapping("/bidRequestPage")
+    @RequestMapping("/bidrequest_publishaudit_list")
     @ResponseBody
     public PageResult bidRequestPage(BidRequestQueryObject qo) {
         qo.setBidRequestState(BidConst.BIDREQUEST_STATE_PUBLISH_PENDING);
         return bidRequestService.queryPage(qo);
     }
 
-    @RequestMapping("/bidRequest_audit")
+    @RequestMapping("/bidrequest_publishaudit")
     @ResponseBody
     public JSONResult bidRequestAudit(Long id, int state, String remark) {
         JSONResult jsonResult = new JSONResult();
@@ -71,6 +72,66 @@ public class BidRequestController {
         }
         return "/bidRequest/borrow_info";
     }
+
+    //满标一审
+    @RequestMapping("/bidRequestAudit1List")
+    public String bidRequestAudit1List() {
+        return "/bidRequest/audit1";
+    }
+
+    @RequestMapping("/bidRequestAudit1Page")
+    @ResponseBody
+    public PageResult bidRequestAudit1Page(BidRequestQueryObject qo) {
+        qo.setBidRequestState(BidConst.BIDREQUEST_STATE_APPROVE_PENDING_1);
+        return bidRequestService.queryPage(qo);
+    }
+
+    @RequestMapping("/bidRequestAudit1_audit")
+    @ResponseBody
+    public JSONResult bidRequestAudit1_audit(Long id, int state, String remark) {
+        JSONResult jsonResult = new JSONResult();
+        try {
+            bidRequestService.audit1(id, state, remark);
+        } catch (Exception e) {
+            e.printStackTrace();
+            jsonResult.mark(e.getMessage());
+        }
+        return jsonResult;
+    }
+    //满标2审
+    @RequestMapping("/bidRequestAudit2List")
+    public String bidRequestAudit21List() {
+        return "/bidRequest/audit2";
+    }
+
+    @RequestMapping("/bidRequestAudit2Page")
+    @ResponseBody
+    public PageResult bidRequestAudit2Page(BidRequestQueryObject qo) {
+        qo.setBidRequestState(BidConst.BIDREQUEST_STATE_APPROVE_PENDING_2);
+        return bidRequestService.queryPage(qo);
+    }
+
+    @RequestMapping("/bidRequestAudit2_audit")
+    @ResponseBody
+    public JSONResult bidRequestAudit2_audit(Long id, int state, String remark) {
+        JSONResult jsonResult = new JSONResult();
+        try {
+            bidRequestService.audit2(id, state, remark);
+        } catch (Exception e) {
+            e.printStackTrace();
+            jsonResult.mark(e.getMessage());
+        }
+        return jsonResult;
+    }
+
+
+
+
+
+
+
+
+
 
 
 }

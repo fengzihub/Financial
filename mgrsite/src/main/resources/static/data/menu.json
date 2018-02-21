@@ -61,11 +61,13 @@
 				"attributes":{"url":"/bidRequestList"}
 			},{
 				"id":45,
-				"text":"满标一审"
+				"text":"满标一审",
+				"attributes":{"url":"/bidRequestAudit1List"}
 
 			},{
 				"id":46,
-				"text":"满标二审"
+				"text":"满标二审",
+				"attributes":{"url":"/bidRequestAudit2List"}
 			},{
 				"id":47,
 				"text":"线下充值审核",

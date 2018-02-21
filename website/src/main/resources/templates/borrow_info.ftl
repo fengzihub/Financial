@@ -172,7 +172,7 @@
 						<tr>
 							<td colspan="2">
 							<div style="margin-bottom: 10px;" class="progress">
-								<div style="width: ${bidRequest.persent}" class="progress-bar progress-bar-info progress-bar-striped"></div>
+								<div style="width: ${bidRequest.persent}%" class="progress-bar progress-bar-info progress-bar-striped"></div>
 							</div>
 							</td>
 						</tr>

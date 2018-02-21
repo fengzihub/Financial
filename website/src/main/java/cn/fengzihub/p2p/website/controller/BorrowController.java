@@ -6,6 +6,7 @@ import cn.fengzihub.p2p.base.service.IRealAuthService;
 import cn.fengzihub.p2p.base.service.IUserFileService;
 import cn.fengzihub.p2p.base.service.IUserinfoService;
 import cn.fengzihub.p2p.base.util.BidConst;
+import cn.fengzihub.p2p.base.util.JSONResult;
 import cn.fengzihub.p2p.base.util.UserContext;
 import cn.fengzihub.p2p.business.domain.BidRequest;
 import cn.fengzihub.p2p.business.service.IBidRequestService;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
 
 /**
  * Created by Administrator on 2018.02.12.
@@ -100,6 +104,24 @@ public class BorrowController {
         }
         return "/borrow_info";
     }
+
+
+    @RequestMapping("/borrow_bid")
+    @ResponseBody
+    public JSONResult borrowBid(Long bidRequestId, BigDecimal amount) {
+        JSONResult jsonResult = new JSONResult();
+        try {
+            bidRequestService.bid(bidRequestId,amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            jsonResult.mark(e.getMessage());
+        }
+        return jsonResult;
+
+    }
+
+
+
 
 
 

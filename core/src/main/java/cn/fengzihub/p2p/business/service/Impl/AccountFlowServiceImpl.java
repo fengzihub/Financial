@@ -28,15 +28,54 @@ public class AccountFlowServiceImpl implements IAccountFlowService {
 
     @Override
     public void createRechargeOfflineFlow(Account account, BigDecimal amount) {
+
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_RECHARGE_OFFLINE,"线下充值成功" + amount + "元");
+    }
+
+    @Override
+    public void createBidFlow(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_BID_FREEZED,"投标冻结:" + amount + "元");
+
+    }
+
+    @Override
+    public void createBidFailedFlow(Account account, BigDecimal amount) {
+
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_BID_UNFREEZED,"满标一审拒绝,解冻金额:" + amount + "元");
+
+    }
+
+    @Override
+    public void createBidRequestSuccessFlow(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.BIDREQUEST_STATE_PAYING_BACK,"借款:" + amount + "元");
+    }
+
+    @Override
+    public void createPayAccountManagementCharge(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_CHARGE,"支付平台管理费:" + amount + "元");
+    }
+
+    @Override
+    public void createBidSuccessFlow(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_BID_SUCCESSFUL,"成功投资,解冻金额:" + amount + "元");
+    }
+
+
+    private void createFlow(Account account, BigDecimal amount, int actionType, String remark) {
         AccountFlow flow = new AccountFlow();
         flow.setAccountId(account.getId());
         flow.setAmount(amount);
         flow.setTradeTime(new Date());
         flow.setUsableAmount(account.getUsableAmount());
         flow.setFreezedAmount(account.getFreezedAmount());
-        flow.setActionType(BidConst.ACCOUNT_ACTIONTYPE_RECHARGE_OFFLINE);
-        flow.setRemark("线下充值成功" + amount + "元");
+        flow.setActionType(actionType);
+        flow.setRemark(remark);
 
         this.save(flow);
     }
+
+
+
+
+
 }

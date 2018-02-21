@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.SystemAccountMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.SystemAccount" >
+    <id column="id" property="id" />
+    <result column="version" property="version" />
+    <result column="usableAmount" property="usableAmount" />
+    <result column="freezedAmount" property="freezedAmount" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.SystemAccount" useGeneratedKeys="true" keyProperty="id" >
+    insert into `systemaccount` (version, usableAmount, freezedAmount)
+    values (#{version}, #{usableAmount}, #{freezedAmount})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.SystemAccount" >
+    update `systemaccount`
+    set version = version +1,
+      usableAmount = #{usableAmount},
+      freezedAmount = #{freezedAmount}
+    where id = #{id} and version=#{version}
+  </update>
+  <select id="selectByCurrent" resultMap="BaseResultMap">
+    select id, version, usableAmount, freezedAmount
+    from `systemaccount`
+  </select>
+
+</mapper>

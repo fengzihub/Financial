@@ -11,4 +11,11 @@ public interface IBidService {
     int update(Bid bid);
 
     Bid get(Long id);
+
+    /**
+     * 批量修改投标的状态
+     * @param bidRequestId
+     * @param bidRequestState
+     */
+    void updateState(Long bidRequestId, int bidRequestState);
 }

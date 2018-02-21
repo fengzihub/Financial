@@ -6,6 +6,8 @@ import cn.fengzihub.p2p.business.domain.BidRequest;
 import cn.fengzihub.p2p.business.query.BidRequestQueryObject;
 import com.github.pagehelper.PageInfo;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Administrator on 2018.02.19.
  */
@@ -39,4 +41,27 @@ public interface IBidRequestService {
     void publishAudit(Long id, int state, String remark);
 
     PageInfo pageInfoPage(BidRequestQueryObject qo);
+
+    /**
+     * 投标
+     * @param bidRequestId
+     * @param amount
+     */
+    void bid(Long bidRequestId, BigDecimal amount);
+
+    /**
+     * 满标一审
+     * @param id
+     * @param state
+     * @param remark
+     */
+    void audit1(Long id, int state, String remark);
+
+    /**
+     * 满标二审
+     * @param id
+     * @param state
+     * @param remark
+     */
+    void audit2(Long id, int state, String remark);
 }

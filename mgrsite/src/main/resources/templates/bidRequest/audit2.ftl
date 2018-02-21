@@ -39,7 +39,7 @@
 
 <div id="employee-dialog" class="easyui-dialog" title="新增" style="width:400px;height:300px;"
      data-options="modal:true,closed:true,buttons:'#buttons'">
-    <form id="employee_form" method="post" action="/bidRequest_audit">
+    <form id="employee_form" method="post" action="/bidRequestAudit2_audit">
 
         <input type="hidden" name="id" id="id" value=""/>
         <input type="hidden" name="state" id="state" value=""/>
@@ -114,14 +114,14 @@
         $("#state").val(ret);
 
         emp_from.form("submit", {
-            url: '/bidRequestAudit1_audit',
+            url: '/bidRequestAudit2_audit',
             success: function (data) {
                 data = JSON.parse(data);
                 if (!data.success) {
                     $.messager.alert("温馨提示", data.msg, "error");
                     return;
                 }
-                $.messager.alert("温馨提示","保存成功", "info", function () {
+                $.messager.alert("温馨提示","审核成功", "info", function () {
                     emp_dia.dialog("close");
                     emp_dg.datagrid("reload");
                 });
@@ -130,7 +130,7 @@
     }),
 
     emp_dg.datagrid({
-        url: '/bidRequestAudit1Page', //拉取分页数据
+        url: '/bidRequestAudit2Page', //拉取分页数据
         fit: true,
         fitColumns: true,
         singleSelect: true,

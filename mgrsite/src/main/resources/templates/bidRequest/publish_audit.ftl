@@ -114,7 +114,7 @@
         $("#state").val(ret);
 
         emp_from.form("submit", {
-            url: '/bidRequestAudit1_audit',
+            url: '/bidrequest_publishaudit',
             success: function (data) {
                 data = JSON.parse(data);
                 if (!data.success) {
@@ -130,7 +130,7 @@
     }),
 
     emp_dg.datagrid({
-        url: '/bidRequestAudit1Page', //拉取分页数据
+        url: '/bidrequest_publishaudit_list', //拉取分页数据
         fit: true,
         fitColumns: true,
         singleSelect: true,
@@ -197,7 +197,7 @@
             $("#returnType").html(rowData.returnTypeDisplay);
 
             //emp_from.form("load", rowData);
-            emp_dia.dialog("setTitle", '满标一审');
+            emp_dia.dialog("setTitle", '发标前审核');
             emp_dia.dialog("open");
 
 

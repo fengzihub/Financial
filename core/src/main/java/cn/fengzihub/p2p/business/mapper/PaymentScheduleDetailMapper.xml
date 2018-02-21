@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.PaymentScheduleDetailMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.PaymentScheduleDetail" >
+    <id column="id" property="id" />
+    <result column="bidAmount" property="bidAmount" />
+    <result column="bidId" property="bidId" />
+    <result column="totalAmount" property="totalAmount" />
+    <result column="principal" property="principal" />
+    <result column="interest" property="interest" />
+    <result column="monthIndex" property="monthIndex" />
+    <result column="deadLine" property="deadLine" />
+    <result column="bidRequestId" property="bidRequestId" />
+    <result column="payDate" property="payDate" />
+    <result column="returnType" property="returnType" />
+    <result column="paymentScheduleId" property="paymentScheduleId" />
+    <result column="investorId" property="investorId" />
+
+    <association property="borrowUser" columnPrefix="ap_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.PaymentScheduleDetail" useGeneratedKeys="true" keyProperty="id" >
+    insert into `paymentscheduledetail` (bidAmount, bidId, totalAmount, principal, interest, monthIndex, 
+      deadLine, bidRequestId, payDate, returnType, paymentScheduleId, 
+      borrowUser_id, investorId)
+    values (#{bidAmount}, #{bidId}, #{totalAmount}, #{principal}, #{interest}, #{monthIndex}, 
+      #{deadLine}, #{bidRequestId}, #{payDate}, #{returnType}, #{paymentScheduleId}, 
+      #{borrowUser.id}, #{investorId})
+  </insert>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select psd.id, psd.bidAmount, psd.bidId, psd.totalAmount, psd.principal, psd.interest, psd.monthIndex, psd.deadLine,
+    psd.bidRequestId, psd.payDate, psd.returnType, psd.paymentScheduleId, psd.borrowUser_id, psd.investorId,
+    ap.id ap_id,ap.username ap_username
+    from `paymentscheduledetail` psd join logininfo ap ON psd.borrowUser_id=ap.id
+    where psd.id = #{id}
+  </select>
+  <select id="selectByPaymentScheduleId" resultMap="BaseResultMap">
+    select psd.id, psd.bidAmount, psd.bidId, psd.totalAmount, psd.principal, psd.interest, psd.monthIndex, psd.deadLine,
+    psd.bidRequestId, psd.payDate, psd.returnType, psd.paymentScheduleId, psd.borrowUser_id, psd.investorId,
+    ap.id ap_id,ap.username ap_username
+    from `paymentscheduledetail` psd join logininfo ap ON psd.borrowUser_id=ap.id
+    where psd.paymentScheduleId = #{paymentScheduleId}
+  </select>
+</mapper>

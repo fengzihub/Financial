@@ -31,4 +31,9 @@ public class BidServiceImpl implements IBidService {
     public Bid get(Long id) {
         return bidMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public void updateState(Long bidRequestId, int bidRequestState) {
+        bidMapper.updateState(bidRequestId, bidRequestState);
+    }
 }
