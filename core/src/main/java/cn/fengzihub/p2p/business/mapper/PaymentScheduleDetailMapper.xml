@@ -46,4 +46,12 @@
     from `paymentscheduledetail` psd join logininfo ap ON psd.borrowUser_id=ap.id
     where psd.paymentScheduleId = #{paymentScheduleId}
   </select>
+
+  <update id="updatePayDate">
+    UPDATE paymentscheduledetail
+    set payDate =#{payDate}
+    where paymentScheduleId =#{pId}
+  </update>
+
+
 </mapper>

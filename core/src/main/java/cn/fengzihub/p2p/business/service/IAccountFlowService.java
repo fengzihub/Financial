@@ -52,4 +52,25 @@ public interface IAccountFlowService {
      * @param amount
      */
     void createBidSuccessFlow(Account acccount, BigDecimal amount);
+
+    /**
+     * 还款成功流水
+     * @param account
+     * @param amount
+     */
+    void createReturnMenory(Account account, BigDecimal amount);
+
+    /**
+     * 回款流水
+     * @param account
+     * @param amount
+     */
+    void createBidReturnMenoryFlow(Account account, BigDecimal amount);
+
+    /**
+     * 交利息管理费流水
+     * @param account
+     * @param amount
+     */
+    void creatPayInterestManagerChargeFlow(Account account, BigDecimal amount);
 }

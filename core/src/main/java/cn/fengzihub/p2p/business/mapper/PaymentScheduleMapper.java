@@ -1,6 +1,8 @@
 package cn.fengzihub.p2p.business.mapper;
 
 import cn.fengzihub.p2p.business.domain.PaymentSchedule;
+import cn.fengzihub.p2p.business.query.PaymentScheduleQueryObject;
+
 import java.util.List;
 
 public interface PaymentScheduleMapper {
@@ -10,7 +12,10 @@ public interface PaymentScheduleMapper {
 
     PaymentSchedule selectByPrimaryKey(Long id);
 
-    List<PaymentSchedule> selectAll();
 
     int updateByPrimaryKey(PaymentSchedule record);
+
+    List queryPage(PaymentScheduleQueryObject qo);
+
+    List<PaymentSchedule> selectBidRequestId(Long bidRequestId);
 }

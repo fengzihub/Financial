@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.UserBankinfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.UserBankinfo" >
+    <id column="id" property="id" />
+    <result column="forkName" property="forkName" />
+    <result column="bankName" property="bankName" />
+    <result column="accountNumber" property="accountNumber" />
+    <result column="accountName" property="accountName" />
+    <result column="userinfoId" property="userinfoId" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.UserBankinfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into `userbankinfo` (forkName, bankName, accountNumber, accountName, userinfoId
+      )
+    values (#{forkName}, #{bankName}, #{accountNumber}, #{accountName}, #{userinfoId}
+      )
+  </insert>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, forkName, bankName, accountNumber, accountName, userinfoId
+    from `userbankinfo`
+    where userinfoId = #{id}
+  </select>
+</mapper>

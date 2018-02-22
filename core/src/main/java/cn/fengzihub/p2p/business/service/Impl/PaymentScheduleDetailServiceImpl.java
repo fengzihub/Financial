@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2018.02.21.
  */
@@ -24,6 +26,11 @@ public class PaymentScheduleDetailServiceImpl implements IPaymentScheduleDetailS
     @Override
     public PaymentScheduleDetail get(Long id) {
         return paymentScheduleDetailMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void updatePayDate(Long id, Date payDate) {
+        paymentScheduleDetailMapper.updatePayDate(id, payDate);
     }
 
 }

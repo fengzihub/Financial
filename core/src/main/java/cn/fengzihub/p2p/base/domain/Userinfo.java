@@ -39,12 +39,32 @@ public class Userinfo extends BaseDomain{
     public boolean getIsBasicInfo() {
         return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_BASIC_INFO);
     }
+
     public boolean getIsRealAuth() {
         return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_REAL_AUTH);
     }
+
     public boolean getIsVedioAuth() {
         return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_VEDIO_AUTH);
     }
+
+
+
+    //是否已经提现
+    public boolean gethasMoneywithProcess() {
+        return BitStatesUtils.hasState(this.bitState, BitStatesUtils.HAS_MONEY_WITH_PROCESS);
+    }
+
+
+    /**
+     * 是否绑定银行卡
+     * @return
+     */
+    public boolean getIsBindBank() {
+        return BitStatesUtils.hasState(this.bitState, BitStatesUtils.OP_BIND_BANK);
+    }
+
+
     public boolean gethasBidRequestProcess() {
         return BitStatesUtils.hasState(this.bitState, BitStatesUtils.HAS_BIDREQUEST_PROCESS);
     }

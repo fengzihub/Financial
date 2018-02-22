@@ -60,6 +60,24 @@ public class AccountFlowServiceImpl implements IAccountFlowService {
         createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_BID_SUCCESSFUL,"成功投资,解冻金额:" + amount + "元");
     }
 
+    @Override
+    public void createReturnMenory(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_RETURN_MONEY,"还款:" + amount + "元");
+    }
+
+    @Override
+    public void createBidReturnMenoryFlow(Account account, BigDecimal amount) {
+
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_CALLBACK_MONEY,"回款:" + amount + "元");
+
+    }
+
+    @Override
+    public void creatPayInterestManagerChargeFlow(Account account, BigDecimal amount) {
+
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_INTEREST_SHARE,"利息管理费Q:" + amount + "元");
+    }
+
 
     private void createFlow(Account account, BigDecimal amount, int actionType, String remark) {
         AccountFlow flow = new AccountFlow();

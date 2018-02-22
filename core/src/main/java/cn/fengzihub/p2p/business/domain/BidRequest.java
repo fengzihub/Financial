@@ -82,8 +82,7 @@ public class BidRequest extends BaseDomain {
     }
 
     public BigDecimal getPersent() {
-        return this.currentSum.multiply(CalculatetUtil.ONE_HUNDRED).
-                divide(this.bidRequestAmount).setScale(2, RoundingMode.HALF_UP);
+        return this.currentSum.multiply(CalculatetUtil.ONE_HUNDRED).divide(this.bidRequestAmount,2, RoundingMode.HALF_UP);
     }
 
 }

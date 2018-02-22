@@ -18,4 +18,10 @@ public interface ISystemAccountFlowService {
      */
     void createSystemAccountManagementCharge(SystemAccount account, BigDecimal amount);
 
+    /**
+     * 系统账户收取利息管理费
+     * @param account
+     * @param amount
+     */
+    void creatSystemAccountInterestManagerChargeFlow(SystemAccount account, BigDecimal amount);
 }

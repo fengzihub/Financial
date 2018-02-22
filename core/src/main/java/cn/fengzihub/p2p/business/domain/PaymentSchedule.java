@@ -32,4 +32,19 @@ public class PaymentSchedule extends BaseDomain {
     private String bidRequestTitle;//借款标题
     private int bidRequestType;//借款类型
     private int returnType;//还款方式
+
+    public String getStateDisplay() {
+        switch (state) {
+            case BidConst.PAYMENT_STATE_NORMAL:
+                return "正常待还";
+            case BidConst.PAYMENT_STATE_DONE:
+                return "已还";
+            default:
+                return "";
+
+        }
+    }
+
+
+
 }

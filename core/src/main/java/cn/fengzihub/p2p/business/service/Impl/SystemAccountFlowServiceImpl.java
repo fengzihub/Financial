@@ -31,6 +31,11 @@ public class SystemAccountFlowServiceImpl implements ISystemAccountFlowService {
         creatFlow(account, amount, BidConst.SYSTEM_ACCOUNT_ACTIONTYPE_MANAGE_CHARGE, "成功投标,收到借款人收取费:" + amount + "元");
     }
 
+    @Override
+    public void creatSystemAccountInterestManagerChargeFlow(SystemAccount account, BigDecimal amount) {
+
+        creatFlow(account, amount, BidConst.SYSTEM_ACCOUNT_ACTIONTYPE_INTREST_MANAGE_CHARGE, "收到投资人利息管理Q费:" + amount + "元");
+    }
 
 
     public void creatFlow(SystemAccount account, BigDecimal amount, int actionType, String remark) {

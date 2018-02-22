@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.MoneyWithdrawMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.MoneyWithdraw" >
+    <id column="id" property="id" />
+    <result column="accountNumber" property="accountNumber" />
+    <result column="forkName" property="forkName" />
+    <result column="bankName" property="bankName" />
+    <result column="accountName" property="accountName" />
+    <result column="amount" property="amount" />
+    <result column="state" property="state" />
+    <result column="chargeFee" property="chargeFee" />
+    <result column="remark" property="remark" />
+    <result column="auditTime" property="auditTime" />
+    <result column="applyTime" property="applyTime" />
+
+    <association property="applier" columnPrefix="ap_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+    <association property="auditor" columnPrefix="au_" javaType="cn.fengzihub.p2p.base.domain.Logininfo">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.MoneyWithdraw" useGeneratedKeys="true" keyProperty="id" >
+    insert into `moneywithdraw` (accountNumber, forkName, bankName, accountName, amount, state, 
+      chargeFee, remark, auditTime, applyTime, auditor_id, applier_id
+      )
+    values (#{accountNumber}, #{forkName}, #{bankName}, #{accountName}, #{amount}, #{state}, 
+      #{chargeFee}, #{remark}, #{auditTime}, #{applyTime}, #{auditor.id}, #{applier.id}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.MoneyWithdraw" >
+    update `moneywithdraw`
+    set accountNumber = #{accountNumber},
+      forkName = #{forkName},
+      bankName = #{bankName},
+      accountName = #{accountName},
+      amount = #{amount},
+      state = #{state},
+      chargeFee = #{chargeFee},
+      remark = #{remark},
+      auditTime = #{auditTime},
+      applyTime = #{applyTime},
+      auditor_id = #{auditor.id},
+      applier_id = #{applier.id}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select mwd.id, mwd.accountNumber, mwd.forkName, mwd.bankName, mwd.accountName, mwd.amount, mwd.state, chargeFee,
+    mwd.remark, mwd.auditTime, mwd.applyTime, mwd.auditor_id, mwd.applier_id,
+    ap.id ap_id,ap.username ap_username,
+    au.id au_id,au.username au_username
+    from `moneywithdraw` mwd join logininfo ap ON mwd.applier_id=ap.id
+    LEFT join logininfo au on mwd.auditor_id=au.id
+    where mwd.id = #{id}
+  </select>
+
+</mapper>

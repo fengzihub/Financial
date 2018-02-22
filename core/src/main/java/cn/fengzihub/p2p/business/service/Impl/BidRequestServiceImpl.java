@@ -306,8 +306,8 @@ public class BidRequestServiceImpl implements IBidRequestService {
                 //借款人剩余授信额度减少
                 bidRequestaccount.setRemainBorrowLimit(bidRequestaccount.getRemainBorrowLimit().subtract(bidRequest.getBidRequestAmount()));
                 //借款人账户中待还金额增加
-                BigDecimal bigDecimal = bidRequest.getBidRequestAmount().add(bidRequest.getTotalRewardAmount());
-                bidRequestaccount.setUnReturnAmount(bidRequestaccount.getUnReturnAmount().add(bigDecimal));
+                BigDecimal b1 = bidRequest.getBidRequestAmount().add(bidRequest.getTotalRewardAmount());
+                bidRequestaccount.setUnReturnAmount(bidRequestaccount.getUnReturnAmount().add(b1));
                 //生成借款人的流水对象
                 accountFlowService.createBidRequestSuccessFlow(bidRequestaccount, bidRequest.getBidRequestAmount());
 
@@ -317,7 +317,7 @@ public class BidRequestServiceImpl implements IBidRequestService {
                 userinfoService.update(userinfo);
                 //支付平台管理费
                 BigDecimal accountManagementCharge = CalculatetUtil.calAccountManagementCharge(bidRequest.getBidRequestAmount());
-                bidRequestaccount.setUnReturnAmount(bidRequestaccount.getUnReturnAmount().subtract(accountManagementCharge));
+                bidRequestaccount.setUsableAmount(bidRequestaccount.getUsableAmount().subtract(accountManagementCharge));
                 accountFlowService.createPayAccountManagementCharge(bidRequestaccount, accountManagementCharge);
                 accountService.update(bidRequestaccount);
                 //支付流水
@@ -351,7 +351,7 @@ public class BidRequestServiceImpl implements IBidRequestService {
                 for (PaymentSchedule ps : paymentSchedules) {
                     for (PaymentScheduleDetail psd : ps.getDetails()) {
                         bidUseracccount = accountMap.get(psd.getInvestorId());
-                        bidUseracccount.setUnReceiveInterest(bidUseracccount.getUnReturnAmount().add(psd.getInterest()));
+                        bidUseracccount.setUnReceiveInterest(bidUseracccount.getUnReceiveInterest().add(psd.getInterest()));
                         bidUseracccount.setUnReceivePrincipal(bidUseracccount.getUnReceivePrincipal().add(psd.getPrincipal()));
                     }
                 }
@@ -383,6 +383,7 @@ public class BidRequestServiceImpl implements IBidRequestService {
             ps.setBorrowUser(bidRequest.getCreateUser());
             ps.setDeadLine(DateUtils.addMonths(bidRequest.getPublishTime(), i + 1));
             ps.setReturnType(bidRequest.getReturnType());
+            ps.setMonthIndex(i+1);
 
             //判断是否是最后一期
             //不是
