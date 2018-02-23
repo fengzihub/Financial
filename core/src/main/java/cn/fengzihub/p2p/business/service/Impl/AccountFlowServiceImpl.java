@@ -75,7 +75,31 @@ public class AccountFlowServiceImpl implements IAccountFlowService {
     @Override
     public void creatPayInterestManagerChargeFlow(Account account, BigDecimal amount) {
 
-        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_INTEREST_SHARE,"利息管理费Q:" + amount + "元");
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_INTEREST_SHARE,"利息管理费:" + amount + "元");
+    }
+
+    @Override
+    public void createMoneyWith(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_WITHDRAW_FREEZED,"提现申请冻结金额:" + amount + "元");
+    }
+
+    @Override
+    public void createMoneyWithChargeFee(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_WITHDRAW_MANAGE_CHARGE,"提现成功手续费:" + amount + "元");
+
+    }
+
+    @Override
+    public void createMoneyWithSuccess(Account account, BigDecimal amount) {
+
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_WITHDRAW,"提现成功:" + amount + "元");
+    }
+
+    @Override
+    public void createMoneyWithFailed(Account account, BigDecimal amount) {
+
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_WITHDRAW_UNFREEZED,"提现失败:" + amount + "元");
+
     }
 
 

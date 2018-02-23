@@ -12,6 +12,8 @@ import cn.fengzihub.p2p.base.service.IUserinfoService;
 import cn.fengzihub.p2p.base.util.BidConst;
 import cn.fengzihub.p2p.base.util.MD5;
 import cn.fengzihub.p2p.base.util.UserContext;
+import cn.fengzihub.p2p.business.domain.ExpAccount;
+import cn.fengzihub.p2p.business.service.IExpAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,8 @@ public class LogininfoServiceImpl implements ILogininfoService {
     private IUserinfoService userinfoService;
     @Autowired
     private IIpLogService ipLogService;
-
+    @Autowired
+    private IExpAccountService expAccountService;
     //注册
     @Override
     public Logininfo register(String username, String password) {
@@ -58,6 +61,15 @@ public class LogininfoServiceImpl implements ILogininfoService {
         Userinfo userinfo = new Userinfo();
         userinfo.setId(logininfo.getId());
         userinfoService.save(userinfo);
+
+        //创建体验金账户
+        ExpAccount ex = new ExpAccount();
+        ex.setId(logininfo.getId());
+        expAccountService.save(ex);
+        //发放体验金
+        expAccountService.grantExpMoney(ex.getId(), new IExpAccountService.LastTime(1,
+                IExpAccountService.LastTimeUnit.MONTH), BidConst.REGISTET_GRANT_EXPMONEY,BidConst.EXPMONEY_TYPE_REGISTER);
+
         return logininfo;
     }
 

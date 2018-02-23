@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.ExpAccountMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.ExpAccount" >
+    <id column="id" property="id" />
+    <result column="version" property="version" />
+    <result column="usableAmount" property="usableAmount" />
+    <result column="freezedAmount" property="freezedAmount" />
+    <result column="unReturnExpAmount" property="unReturnExpAmount" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.ExpAccount" useGeneratedKeys="true" keyProperty="id" >
+    insert into `expaccount` (id,version, usableAmount, freezedAmount, unReturnExpAmount)
+    values (#{id},0, #{usableAmount}, #{freezedAmount}, #{unReturnExpAmount})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.ExpAccount" >
+    update `expaccount`
+    set version =version+1,
+      usableAmount = #{usableAmount},
+      freezedAmount = #{freezedAmount},
+      unReturnExpAmount = #{unReturnExpAmount}
+    where id = #{id} and version=#{version}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, version, usableAmount, freezedAmount, unReturnExpAmount
+    from `expaccount`
+    where id = #{id}
+  </select>
+
+</mapper>

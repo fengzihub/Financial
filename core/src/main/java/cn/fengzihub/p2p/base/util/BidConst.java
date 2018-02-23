@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 /**
  * 系统中的常量
- * 
+ *
  * @author Administrator
- * 
+ *
  */
 public class BidConst {
 
@@ -55,6 +55,7 @@ public class BidConst {
 	// 按月到期还款(每月还利息,到期还本息)
 	// ---------------------标的类型--------------------------
 	public final static int BIDREQUEST_TYPE_NORMAL = 0; // 普通信用标
+	public final static int BIDREQUEST_TYPE_EXP = 1; // 体验标
 
 	// ---------------------借款状态---------------------------
 	public final static int BIDREQUEST_STATE_PUBLISH_PENDING = 0; // 待发布
@@ -125,5 +126,8 @@ public class BidConst {
 	public final static int PAYMENT_STATE_NORMAL = 0; // 正常待还
 	public final static int PAYMENT_STATE_DONE = 1; // 已还
 
+	/**=============体验金相关=====================*/
+	public final static BigDecimal REGISTET_GRANT_EXPMONEY = new BigDecimal("500.00");
+	public final static int EXPMONEY_TYPE_REGISTER = 1; //注册发放体验金
 
 }

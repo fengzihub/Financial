@@ -3,6 +3,8 @@ package cn.fengzihub.p2p.website.controller;
 import cn.fengzihub.p2p.base.service.IAccountService;
 import cn.fengzihub.p2p.base.service.IUserinfoService;
 import cn.fengzihub.p2p.base.util.JSONResult;
+import cn.fengzihub.p2p.base.util.UserContext;
+import cn.fengzihub.p2p.business.service.IExpAccountService;
 import cn.fengzihub.p2p.website.util.RequirelLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,16 @@ public class PersonalController {
     private IAccountService accountService;
     @Autowired
     private IUserinfoService userinfoService;
+    @Autowired
+    private IExpAccountService expAccountService;
+
     @RequestMapping("/personal")
     @RequirelLogin
     public String personalPage(Model model) {
 
         model.addAttribute("account", accountService.getCurrent());
         model.addAttribute("userinfo", userinfoService.getCurrent());
+        model.addAttribute("expAccount", expAccountService.get(UserContext.getCurrent().getId()));
         return "personal";
     }
 

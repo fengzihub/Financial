@@ -368,6 +368,32 @@ public class BidRequestServiceImpl implements IBidRequestService {
 
     }
 
+    //发布体验标
+    @Override
+    public void publish(BidRequest bidRequest) {
+
+        if ( bidRequest.getBidRequestAmount().compareTo(BidConst.SMALLEST_BIDREQUEST_AMOUNT) >= 0 &&
+                bidRequest.getMinBidAmount().compareTo(BidConst.SMALLEST_BID_AMOUNT)>= 0
+                ) {
+            BidRequest br = new BidRequest();
+            br.setApplyTime(new Date());
+            br.setBidRequestAmount(bidRequest.getBidRequestAmount());
+            br.setBidRequestState(BidConst.BIDREQUEST_STATE_PUBLISH_PENDING);
+            br.setBidRequestType(BidConst.BIDREQUEST_TYPE_EXP);
+            br.setCreateUser(UserContext.getCurrent());
+            br.setCurrentRate(bidRequest.getCurrentRate());
+            br.setDescription(bidRequest.getDescription());
+            br.setDisableDate(bidRequest.getDisableDate());
+            br.setMinBidAmount(bidRequest.getMinBidAmount());
+            br.setMonthes2Return(bidRequest.getMonthes2Return());
+            br.setReturnType(BidConst.RETURN_TYPE_MONTH_INTEREST_PRINCIPAL);
+            br.setTitle(bidRequest.getTitle());
+            BigDecimal bigDecimal = CalculatetUtil.calTotalInterest(br.getReturnType(), br.getBidRequestAmount(), br.getCurrentRate(), br.getMonthes2Return());
+            br.setTotalRewardAmount(bigDecimal);
+            this.save(br);
+        }
+    }
+
     private List<PaymentSchedule> createPaymentSchedule(BidRequest bidRequest) {
 
         List<PaymentSchedule> paymentSchedules = new ArrayList<PaymentSchedule>();

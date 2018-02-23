@@ -19,6 +19,7 @@ public class BaseAuthDomain extends BaseDomain {
     protected Logininfo applier;//申请人
     protected int state;//审核状态
     protected Logininfo auditor;//审核人呢
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
     protected Date applyTime;//申请时间
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
     protected Date auditTime;//审核时间

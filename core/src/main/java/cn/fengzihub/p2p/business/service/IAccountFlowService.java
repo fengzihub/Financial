@@ -73,4 +73,32 @@ public interface IAccountFlowService {
      * @param amount
      */
     void creatPayInterestManagerChargeFlow(Account account, BigDecimal amount);
+
+    /**
+     * 提现冻结金额
+     * @param account
+     * @param amount
+     */
+    void createMoneyWith(Account account, BigDecimal amount);
+
+    /**
+     * 提现手续费
+     * @param account
+     * @param amount
+     */
+    void createMoneyWithChargeFee(Account account, BigDecimal amount);
+
+    /**
+     * 提现成功流水
+     * @param account
+     * @param amount
+     */
+    void createMoneyWithSuccess(Account account, BigDecimal amount);
+
+    /**
+     * 提现失败流水
+     * @param account
+     * @param amount
+     */
+    void createMoneyWithFailed(Account account, BigDecimal amount);
 }

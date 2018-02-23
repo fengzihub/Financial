@@ -72,8 +72,29 @@
 				"id":47,
 				"text":"线下充值审核",
 				"attributes":{"url":"/rechargeofflineList"}
+			},{
+				"id":48,
+				"text":"提现审核",
+				"attributes":{"url":"/moneyWithdrawList"}
 			}
+
 		]
+	},{
+	"id":4,
+	"text":"体验金相关",
+	"children":[
+		{
+			"id":51,
+			"text":"发布体验标",
+			"attributes":{"url":"/expBidRequestPublishPage"}
+
+		},{
+			"id":52,
+			"text":"体验标列表",
+			"attributes":{"url":"/expBidRequestPublishList"}
+
+		}
+	]
 	},{
 	"id":5,
 	"text":"系统",

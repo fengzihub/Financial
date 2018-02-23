@@ -63,7 +63,21 @@
 				value=""/> -->
 		</javaClientGenerator>
 	
-		<table tableName="MoneyWithdraw" domainObjectName="MoneyWithdraw"  delimitIdentifiers="true">
+		<table tableName="ExpAccount" domainObjectName="ExpAccount"  delimitIdentifiers="true">
+			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
+			<property name="useActualColumnNames" value="true" />
+			<property name="constructorBased" value="false" />
+			<generatedKey column="id" sqlStatement="JDBC"/>
+		</table>
+
+		<table tableName="ExpAccountFlow" domainObjectName="ExpAccountFlow"  delimitIdentifiers="true">
+			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
+			<property name="useActualColumnNames" value="true" />
+			<property name="constructorBased" value="false" />
+			<generatedKey column="id" sqlStatement="JDBC"/>
+		</table>
+
+		<table tableName="ExpAccountGrantRecord" domainObjectName="ExpAccountGrantRecord"  delimitIdentifiers="true">
 			<!-- 参考 javaModelGenerator 的 constructorBased属性 -->
 			<property name="useActualColumnNames" value="true" />
 			<property name="constructorBased" value="false" />

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.fengzihub.p2p.business.mapper.ExpAccountGrantRecordMapper" >
+  <resultMap id="BaseResultMap" type="cn.fengzihub.p2p.business.domain.ExpAccountGrantRecord" >
+    <id column="id" property="id" />
+    <result column="grantUserId" property="grantUserId" />
+    <result column="amount" property="amount" />
+    <result column="grantDate" property="grantDate" />
+    <result column="returnDate" property="returnDate" />
+    <result column="grantType" property="grantType" />
+    <result column="note" property="note" />
+    <result column="state" property="state" />
+  </resultMap>
+
+  <insert id="insert" parameterType="cn.fengzihub.p2p.business.domain.ExpAccountGrantRecord" useGeneratedKeys="true" keyProperty="id" >
+    insert into `expaccountgrantrecord` (grantUserId, amount, grantDate, returnDate, grantType, note, 
+      state)
+    values (#{grantUserId}, #{amount}, #{grantDate}, #{returnDate}, #{grantType}, #{note}, 
+      #{state})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.fengzihub.p2p.business.domain.ExpAccountGrantRecord" >
+    update `expaccountgrantrecord`
+    set grantUserId = #{grantUserId},
+      amount = #{amount},
+      grantDate = #{grantDate},
+      returnDate = #{returnDate},
+      grantType = #{grantType},
+      note = #{note},
+      state = #{state}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, grantUserId, amount, grantDate, returnDate, grantType, note, state
+    from `expaccountgrantrecord`
+    where id = #{id}
+  </select>
+
+</mapper>

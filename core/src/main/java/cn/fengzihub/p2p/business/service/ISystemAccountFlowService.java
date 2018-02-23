@@ -24,4 +24,11 @@ public interface ISystemAccountFlowService {
      * @param amount
      */
     void creatSystemAccountInterestManagerChargeFlow(SystemAccount account, BigDecimal amount);
+
+    /**
+     * 系统账户收取提现手续费
+     * @param account
+     * @param amount
+     */
+    void createGetChargeFee(SystemAccount account, BigDecimal amount);
 }

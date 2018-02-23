@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -131,6 +131,17 @@
                             冻结金额：<span class="text-primary">${account.freezedAmount?string("0.00")}元</span>
                         </div>
                     </div>
+                    <div class="row h4 account-info">
+                        <div class="col-sm-4">
+                            体验金可用金额：<span class="text-primary">${expAccount.usableAmount?string("0.00")}元</span>
+                        </div>
+                        <div class="col-sm-4">
+                            体验金冻结金额：<span class="text-primary">${expAccount.freezedAmount?string("0.00")}元</span>
+                        </div>
+                        <div class="col-sm-4">
+                            体验金待还金额：<span class="text-primary">${expAccount.unReturnExpAmount?string("0.00")}元</span>
+                        </div>
+                    </div>
 
                     <div class="row h4 account-info">
                         <div class="col-sm-4">
@@ -143,6 +154,7 @@
                             待还本息：<span class="text-primary">${account.unReturnAmount?string("0.00")}元</span>
                         </div>
                     </div>
+
 
                     <div class="el-account-info top-margin">
                         <div class="row">
