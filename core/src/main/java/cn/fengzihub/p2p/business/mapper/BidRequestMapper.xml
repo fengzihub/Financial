@@ -81,6 +81,9 @@
       <if test="bidRequestState >-1">
         and bidRequestState = #{bidRequestState}
       </if>
+      <if test="bidRequestType > -1">
+        and bidRequestType =#{bidRequestType}
+      </if>
     </where>
   </sql>
   <select id="queryForCount" resultType="java.lang.Integer">
@@ -102,6 +105,9 @@
 
   <sql id="where_sql2">
     <where>
+      <if test="bidRequestType>-1">
+        and bidRequestType=#{bidRequestType}
+      </if>
       <if test="bidRequestState>-1">
         and  br.bidRequestState = #{bidRequestState}
       </if>

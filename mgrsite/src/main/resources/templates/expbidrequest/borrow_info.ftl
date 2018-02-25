@@ -39,7 +39,6 @@
 			<#include "../common/top.ftl"/>
 			<div class="row">
 				<div class="col-sm-3">
-					<#include "../common/menu.ftl" />
 				</div>
 				<div class="col-sm-9">
 					<div class="row">

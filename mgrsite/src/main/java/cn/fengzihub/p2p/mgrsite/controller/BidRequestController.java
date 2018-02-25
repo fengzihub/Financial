@@ -61,16 +61,22 @@ public class BidRequestController {
     @RequestMapping("/borrow_info")
     public String borrow_info(Long id, Model model) {
         BidRequest bidRequest = bidRequestService.get(id);
+        String returnPage = "";
+
         if (bidRequest != null) {
             Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
-            model.addAttribute("userInfo", userinfo);
-            model.addAttribute("bidRequest", bidRequest);
-            model.addAttribute("realAuth",realAuthService.get(userinfo.getRealAuthId()));
             model.addAttribute("audits", bidRequestAuditHistoryService.queryByBidRequestId(bidRequest.getId()));
-            model.addAttribute("userFiles",userFileService.queryBuUserId(bidRequest.getCreateUser().getId()));
-
+            model.addAttribute("bidRequest", bidRequest);
+            if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {
+                model.addAttribute("userInfo", userinfo);
+                model.addAttribute("realAuth",realAuthService.get(userinfo.getRealAuthId()));
+                model.addAttribute("userFiles",userFileService.queryBuUserId(bidRequest.getCreateUser().getId()));
+                returnPage = "/bidRequest/borrow_info";
+            } else if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_EXP) {
+                returnPage = "/expbidrequest/borrow_info";
+            }
         }
-        return "/bidRequest/borrow_info";
+        return returnPage;
     }
 
     //满标一审
@@ -82,7 +88,7 @@ public class BidRequestController {
     @RequestMapping("/bidRequestAudit1Page")
     @ResponseBody
     public PageResult bidRequestAudit1Page(BidRequestQueryObject qo) {
-        qo.setBidRequestState(BidConst.BIDREQUEST_STATE_APPROVE_PENDING_1);
+        qo.setBidRequestState(BidConst.BIDREQUEST_TYPE_EXP);
         return bidRequestService.queryPage(qo);
     }
 

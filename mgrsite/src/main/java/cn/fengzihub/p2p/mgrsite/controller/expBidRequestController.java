@@ -2,7 +2,9 @@ package cn.fengzihub.p2p.mgrsite.controller;
 
 import cn.fengzihub.p2p.base.util.BidConst;
 import cn.fengzihub.p2p.base.util.JSONResult;
+import cn.fengzihub.p2p.base.util.PageResult;
 import cn.fengzihub.p2p.business.domain.BidRequest;
+import cn.fengzihub.p2p.business.query.BidRequestQueryObject;
 import cn.fengzihub.p2p.business.service.IBidRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,10 +40,15 @@ public class expBidRequestController {
 
     @RequestMapping("/expBidRequestPublishList")
     public String expBidRequestPublishList() {
-        //TODO 体验金列表???
-        return "";
+
+        return "/expbidrequest/list";
     }
 
-
+    @RequestMapping("/expbidrequestList")
+    @ResponseBody
+    public PageResult expbidrequestList(BidRequestQueryObject qo) {
+        qo.setBidRequestType(BidConst.BIDREQUEST_TYPE_EXP);
+        return bidRequestService.queryPage(qo);
+    }
 
 }

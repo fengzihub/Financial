@@ -39,7 +39,6 @@
 		<div class="row">
 			<div class="col-sm-3">
 				<#assign currentMenu="bidrequest_audit1_list" />
-				<#include "../common/menu.ftl" />
 			</div>
 			<div class="col-sm-9">
 				<div class="page-header">

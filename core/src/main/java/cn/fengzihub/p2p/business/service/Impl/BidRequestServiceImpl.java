@@ -153,12 +153,14 @@ public class BidRequestServiceImpl implements IBidRequestService {
             } else {
                 //审核拒绝
                 brh.setState(BidRequestAuditHistory.STATE_REJECT);
-                //设置标的状态
-                bidRequest.setBidRequestState(BidConst.BIDREQUEST_STATE_PUBLISH_REFUSE);
-                //找到申请人,移除借款状态码
-                Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
-                userinfo.removeSate(BitStatesUtils.HAS_BIDREQUEST_PROCESS);
-                userinfoService.update(userinfo);
+                if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {
+                    //设置标的状态
+                    bidRequest.setBidRequestState(BidConst.BIDREQUEST_STATE_PUBLISH_REFUSE);
+                    //找到申请人,移除借款状态码
+                    Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
+                    userinfo.removeSate(BitStatesUtils.HAS_BIDREQUEST_PROCESS);
+                    userinfoService.update(userinfo);
+                }
             }
             bidRequestAuditHistoryService.save(brh);
             this.update(bidRequest);

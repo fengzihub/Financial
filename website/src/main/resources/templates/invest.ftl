@@ -18,7 +18,7 @@
 		});
 		searchForm.submit();
 		
-		$("input[name=bidRequestState]").change(function(){
+		$(":radio").change(function(){
 			$("#currentPage").val(1);
 			searchForm.submit();
 		});
@@ -37,6 +37,16 @@
 		<h4 class="page-title">投资列表</h4>
 		<form action="/invest_list.do" id="searchForm" method="POST">
 			<input type="hidden" name="currentPage" id="currentPage" value="1">
+			<div style="margin: 20px 0px;">
+					<span class="text-muted">标的分类</span><div style="margin-left: 30px" class="btn-group" data-toggle="buttons">
+				  <label class="btn btn-default active">
+				    <input type="radio" name="bidRequestType" value="0" autocomplete="off" checked="checked"/>&emsp;信用标&emsp;
+				  </label>
+				  <label class="btn btn-default">
+				    <input type="radio" name="bidRequestType" value="1" autocomplete="off" />&emsp;体验标&emsp;
+				  </label>
+				</div>
+			</div>
 			<div style="margin: 20px 0px;">
 					<span class="text-muted">标的状态</span><div style="margin-left: 30px" class="btn-group" data-toggle="buttons">
 				  <label class="btn btn-default active">

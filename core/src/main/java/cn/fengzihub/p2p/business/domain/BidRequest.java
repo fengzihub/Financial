@@ -43,6 +43,11 @@ public class BidRequest extends BaseDomain {
     private List<Bid> bids = new ArrayList<Bid>();// 针对该借款的投标
 
 
+    public String getBidRequestTypeDisplay() {
+        return this.bidRequestType == BidConst.BIDREQUEST_TYPE_EXP?"体":"信";
+    }
+
+
 
     public String getReturnTypeDisplay() {
         return this.returnType == BidConst.RETURN_TYPE_MONTH_INTEREST ? "按月到期" : "按月分期";
