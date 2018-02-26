@@ -63,6 +63,9 @@
       <if test="userId != null">
         and ps.borrowUser_id=#{userId}
       </if>
+      <if test="bidRequestType !=null">
+        and ps.bidRequestType =#{bidRequestType}
+      </if>
     </where>
   </sql>
 
@@ -73,6 +76,22 @@
     from `paymentschedule` ps join logininfo ap ON ps.borrowUser_id=ap.id
     <include refid="where_sql"/>
   </select>
+
+  <select id="queryForCount" resultType="int">
+    select count(ps.id)
+    from paymentschedule ps
+    <include refid="where_sql"/>
+  </select>
+  <select id="queryForList" resultMap="BaseResultMap">
+    select ps.id, ps.deadLine, ps.payDate, ps.totalAmount, ps.principal, ps.interest, ps.monthIndex, ps.state,
+    ps.bidRequestType, ps.returnType, ps.bidRequestId, ps.borrowUser_id, ps.bidRequestTitle,
+    ap.id ap_id,ap.username ap_username
+    from `paymentschedule` ps join logininfo ap ON ps.borrowUser_id=ap.id
+    <include refid="where_sql"/>
+    LIMIT #{start},#{rows}
+  </select>
+
+
 
   <select id="selectBidRequestId" resultMap="BaseResultMap">
      select ps.id, ps.deadLine, ps.payDate, ps.totalAmount, ps.principal, ps.interest, ps.monthIndex, ps.state,

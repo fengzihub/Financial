@@ -11,4 +11,7 @@ import lombok.Setter;
 @Setter
 public class PaymentScheduleQueryObject extends QueryObject {
     private Long userId;
+
+    private Integer bidRequestType;
+
 }

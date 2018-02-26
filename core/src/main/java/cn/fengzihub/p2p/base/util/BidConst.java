@@ -95,6 +95,7 @@ public class BidConst {
 	public final static int ACCOUNT_ACTIONTYPE_RETURN_MONEY = 4;// 资金流水类别：还款
 	// 可用余额减少
 	public final static int ACCOUNT_ACTIONTYPE_CALLBACK_MONEY = 5;// 资金流水类别：回款
+	public final static int ACCOUNT_ACTIONTYPE_CALLBACK_INTEREST_MONEY = 14;// 资金流水类别：利息回款
 	// 可用余额增加
 	public final static int ACCOUNT_ACTIONTYPE_CHARGE = 6;// 资金流水类别：支付平台管理费
 	// 可用余额减少
@@ -121,6 +122,7 @@ public class BidConst {
 	public final static int SYSTEM_ACCOUNT_ACTIONTYPE_MANAGE_CHARGE = 1;// 系统账户收到账户管理费（借款管理费）
 	public final static int SYSTEM_ACCOUNT_ACTIONTYPE_INTREST_MANAGE_CHARGE = 2;// 系统账户收到利息管理费
 	public final static int SYSTEM_ACCOUNT_ACTIONTYPE_WITHDRAW_MANAGE_CHARGE = 3;// 系统账户收到提现手续费
+	public final static int SYSTEM_ACCOUNT_ACTIONTYPE_WITHDRAW_INTEREST_CHARGE = 4;// 系统账户支付体验标利息
 
 	/** =========还款状态=============== */
 	public final static int PAYMENT_STATE_NORMAL = 0; // 正常待还
@@ -129,5 +131,9 @@ public class BidConst {
 	/**=============体验金相关=====================*/
 	public final static BigDecimal REGISTET_GRANT_EXPMONEY = new BigDecimal("500.00");
 	public final static int EXPMONEY_TYPE_REGISTER = 1; //注册发放体验金
+	public final static int EXPMONEY_FLOW_BID = 2; //体验金投标
+	public final static int EXPMONEY_FLOW_BID_FAILED = 3; //体验标投标失败
+	public final static int EXPMONEY_FLOW_BID_SUCCESS = 4; //体验标投标成功
+	public final static int EXPMONEY_FLOW_RETURN_SUCCESS = 5; //体验标结算退回体验金
 
 }

@@ -101,4 +101,11 @@ public interface IAccountFlowService {
      * @param amount
      */
     void createMoneyWithFailed(Account account, BigDecimal amount);
+
+    /**
+     * 体验金还款成功收到利息流水
+     * @param account
+     * @param amount
+     */
+    void createRecevice(Account account, BigDecimal amount);
 }

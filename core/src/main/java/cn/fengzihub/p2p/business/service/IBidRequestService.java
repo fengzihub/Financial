@@ -4,6 +4,7 @@ import cn.fengzihub.p2p.base.domain.Userinfo;
 import cn.fengzihub.p2p.base.util.PageResult;
 import cn.fengzihub.p2p.business.domain.BidRequest;
 import cn.fengzihub.p2p.business.query.BidRequestQueryObject;
+import cn.fengzihub.p2p.business.query.PaymentScheduleQueryObject;
 import com.github.pagehelper.PageInfo;
 
 import java.math.BigDecimal;
@@ -70,4 +71,6 @@ public interface IBidRequestService {
      * @param bidRequest
      */
     void publish(BidRequest bidRequest);
+
+    PageResult querPaymentSchedule(PaymentScheduleQueryObject qo);
 }

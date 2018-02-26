@@ -87,11 +87,14 @@
 			"id":51,
 			"text":"发布体验标",
 			"attributes":{"url":"/expBidRequestPublishPage"}
-
 		},{
 			"id":52,
 			"text":"体验标列表",
 			"attributes":{"url":"/expBidRequestPublishList"}
+		},{
+			"id":53,
+			"text":"体验标还款",
+			"attributes":{"url":"/expBidRequestReturnList"}
 
 		}
 	]

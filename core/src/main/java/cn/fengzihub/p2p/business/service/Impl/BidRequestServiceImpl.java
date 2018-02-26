@@ -11,6 +11,7 @@ import cn.fengzihub.p2p.base.util.UserContext;
 import cn.fengzihub.p2p.business.domain.*;
 import cn.fengzihub.p2p.business.mapper.BidRequestMapper;
 import cn.fengzihub.p2p.business.query.BidRequestQueryObject;
+import cn.fengzihub.p2p.business.query.PaymentScheduleQueryObject;
 import cn.fengzihub.p2p.business.service.*;
 import cn.fengzihub.p2p.business.util.CalculatetUtil;
 import com.github.pagehelper.PageHelper;
@@ -27,7 +28,8 @@ import java.util.*;
 /**
  * Created by Administrator on 2018.02.19.
  */
-@Service@Transactional
+@Service
+@Transactional
 public class BidRequestServiceImpl implements IBidRequestService {
     @Autowired
     private BidRequestMapper bidRequestMapper;
@@ -49,6 +51,11 @@ public class BidRequestServiceImpl implements IBidRequestService {
     private IPaymentScheduleService paymentScheduleService;
     @Autowired
     private IPaymentScheduleDetailService paymentScheduleDetailService;
+    @Autowired
+    private IExpAccountService expAccountService;
+    @Autowired
+    private IExpAccountFlowService expAccountFlowService;
+
     @Override
     public int save(BidRequest bidRequest) {
         bidRequestMapper.insert(bidRequest);
@@ -73,9 +80,9 @@ public class BidRequestServiceImpl implements IBidRequestService {
     @Override
     public boolean canApplyBorrow(Userinfo userinfo) {
         //判断用户是否填写基本资料,视频认证,实名认证
-        if (userinfo.getIsBasicInfo()&&
-                userinfo.getIsVedioAuth()&&
-                userinfo.getIsRealAuth()&&
+        if (userinfo.getIsBasicInfo() &&
+                userinfo.getIsVedioAuth() &&
+                userinfo.getIsRealAuth() &&
                 userinfo.getScore() >= BidConst.CREDIT_BORROW_SCORE) {
             return true;
         }
@@ -93,7 +100,7 @@ public class BidRequestServiceImpl implements IBidRequestService {
                 bidRequest.getBidRequestAmount().compareTo(account.getRemainBorrowLimit()) <= 0 &&
                 bidRequest.getCurrentRate().compareTo(BidConst.SMALLEST_CURRENT_RATE) >= 0 &&
                 bidRequest.getCurrentRate().compareTo(BidConst.MAX_CURRENT_RATE) <= 0 &&
-                bidRequest.getMinBidAmount().compareTo(BidConst.SMALLEST_BID_AMOUNT)>= 0
+                bidRequest.getMinBidAmount().compareTo(BidConst.SMALLEST_BID_AMOUNT) >= 0
                 ) {
 
             BidRequest br = new BidRequest();
@@ -178,43 +185,61 @@ public class BidRequestServiceImpl implements IBidRequestService {
     public void bid(Long bidRequestId, BigDecimal amount) {
 
         BidRequest bidRequest = this.get(bidRequestId);
-        if (bidRequest != null && bidRequest.getBidRequestState() == BidConst.BIDREQUEST_STATE_BIDDING) {
-            //判断当前登录人不是借款人
-            if (!UserContext.getCurrent().getId().equals(bidRequest.getCreateUser().getId())) {
-                Account account = accountService.getCurrent();
-                if (amount.compareTo(bidRequest.getMinBidAmount())>= 0 &&
-                        amount.compareTo(account.getUsableAmount().min(bidRequest.getRemainAmount()))<=0
-                        ) {
+        Account account = accountService.getCurrent();
+        ExpAccount expAccount = expAccountService.get(account.getId());
 
-                    bidRequest.setBidCount(bidRequest.getBidCount()+1);
-                    bidRequest.setCurrentSum(bidRequest.getCurrentSum().add(amount));
+        if (bidRequest != null && bidRequest.getBidRequestState() == BidConst.BIDREQUEST_STATE_BIDDING &&
+                amount.compareTo(bidRequest.getMinBidAmount()) >= 0 &&
+                ((bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL &&//信用标
+                        !account.getId().equals(bidRequest.getCreateUser().getId()) && //判断当前登录人不是借款人
+                        amount.compareTo(account.getUsableAmount().min(bidRequest.getRemainAmount())) <= 0)
+                        ||
+                        (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_EXP && //体验标
+                                amount.compareTo(expAccount.getUsableAmount().min(bidRequest.getRemainAmount())) <= 0
+                        ))
+                ) {
 
-                    //投资对象
-                    Bid bid = new Bid();
-                    bid.setActualRate(bidRequest.getCurrentRate());
-                    bid.setAvailableAmount(amount);
-                    bid.setBidRequestId(bidRequest.getId());
-                    bid.setBidRequestTitle(bidRequest.getTitle());
-                    bid.setBidTime(new Date());
-                    bid.setBidUser(UserContext.getCurrent());
-                    bid.setBidRequestState(bidRequest.getBidRequestState());
-                    bidService.save(bid);
+            bidRequest.setBidCount(bidRequest.getBidCount() + 1);
+            bidRequest.setCurrentSum(bidRequest.getCurrentSum().add(amount));
 
-                    //投资人账户
-                    //可用金额,冻结金额
-                    account.setUsableAmount(account.getUsableAmount().subtract(amount));
-                    account.setFreezedAmount(account.getFreezedAmount().add(amount));
-                    accountService.update(account);
-                    //生成投标流水
-                    accountFlowService.createBidFlow(account,amount);
-                    //判断满标
-                    if (bidRequest.getCurrentSum().compareTo(bidRequest.getBidRequestAmount()) == 0) {
-                        bidRequest.setBidRequestState(BidConst.BIDREQUEST_STATE_APPROVE_PENDING_1);
-                        bidService.updateState(bidRequest.getId(),BidConst.BIDREQUEST_STATE_APPROVE_PENDING_1);
-                    }
-                    this.update(bidRequest);
-                }
+            //投资对象
+            Bid bid = new Bid();
+            bid.setActualRate(bidRequest.getCurrentRate());
+            bid.setAvailableAmount(amount);
+            bid.setBidRequestId(bidRequest.getId());
+            bid.setBidRequestTitle(bidRequest.getTitle());
+            bid.setBidTime(new Date());
+            bid.setBidUser(UserContext.getCurrent());
+            bid.setBidRequestState(bidRequest.getBidRequestState());
+            bidService.save(bid);
+
+            if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {
+                //投资人账户
+                //可用金额,冻结金额
+                account.setUsableAmount(account.getUsableAmount().subtract(amount));
+                account.setFreezedAmount(account.getFreezedAmount().add(amount));
+                //生成投标流水
+                accountFlowService.createBidFlow(account, amount);
+            } else {
+                expAccount.setUsableAmount(expAccount.getUsableAmount().subtract(amount));
+                expAccount.setFreezedAmount(expAccount.getFreezedAmount().add(amount));
+                expAccountService.update(expAccount);
+                //增加体验金流水
+                expAccountFlowService.createBidFlow(expAccount, amount);
+
             }
+
+
+            //判断满标
+            if (bidRequest.getCurrentSum().compareTo(bidRequest.getBidRequestAmount()) == 0) {
+                int state = bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL ? BidConst.BIDREQUEST_STATE_APPROVE_PENDING_1 :
+                        BidConst.BIDREQUEST_STATE_APPROVE_PENDING_2;
+                bidRequest.setBidRequestState(state);
+                bidService.updateState(bidRequest.getId(), state);
+            }
+            accountService.update(account);
+            this.update(bidRequest);
+
         }
     }
 
@@ -251,32 +276,42 @@ public class BidRequestServiceImpl implements IBidRequestService {
         //修改借款对象状态
         bidRequest.setBidRequestState(BidConst.BIDREQUEST_STATE_REJECTED);
         //修改投标的状态
-        bidService.updateState(bidRequest.getId(),BidConst.BIDREQUEST_STATE_REJECTED);
+        bidService.updateState(bidRequest.getId(), BidConst.BIDREQUEST_STATE_REJECTED);
 
         //修改投标对象
         Long bidUserId;
         Account bidUseraccount;
         Map<Long, Account> accountMap = new HashMap<Long, Account>();
         for (Bid bid : bidRequest.getBids()) {
-            bidUserId = bid.getBidUser().getId();
-            bidUseraccount = accountMap.get(bidUserId);
-            if (bidUseraccount == null) {
-                bidUseraccount = accountService.get(bidUserId);
-                accountMap.put(bidUserId, bidUseraccount);
+            if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {
+                bidUserId = bid.getBidUser().getId();
+                bidUseraccount = accountMap.get(bidUserId);
+                if (bidUseraccount == null) {
+                    bidUseraccount = accountService.get(bidUserId);
+                    accountMap.put(bidUserId, bidUseraccount);
+                }
+                bidUseraccount.setFreezedAmount(bidUseraccount.getFreezedAmount().subtract(bid.getAvailableAmount()));
+                bidUseraccount.setUsableAmount(bidUseraccount.getUsableAmount().add(bid.getAvailableAmount()));
+                accountService.update(bidUseraccount);
+                //生成投标失败的流水
+                accountFlowService.createBidFailedFlow(bidUseraccount, bid.getAvailableAmount());
+            } else {
+                ExpAccount expAccount = expAccountService.get(bidRequest.getCreateUser().getId());
+                expAccount.setFreezedAmount(expAccount.getFreezedAmount().subtract(bid.getAvailableAmount()));
+                expAccount.setUsableAmount(expAccount.getUsableAmount().add(bid.getAvailableAmount()));
+                expAccountFlowService.createBidFailedFlow(expAccount, bid.getAvailableAmount());
+                expAccountService.update(expAccount);
             }
-            bidUseraccount.setFreezedAmount(bidUseraccount.getFreezedAmount().subtract(bid.getAvailableAmount()));
-            bidUseraccount.setUsableAmount(bidUseraccount.getUsableAmount().add(bid.getAvailableAmount()));
-
-            //生成投标失败的流水
-            accountFlowService.createBidFailedFlow(bidUseraccount,bid.getAvailableAmount());
         }
         for (Account account : accountMap.values()) {
             accountService.update(account);
         }
-        //借款人userinfo对象去掉正在借款的状态码,更新借款人userinfo对象
-        Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
-        userinfo.removeSate(BitStatesUtils.HAS_BIDREQUEST_PROCESS);
-        userinfoService.update(userinfo);
+        if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {
+            //借款人userinfo对象去掉正在借款的状态码,更新借款人userinfo对象
+            Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
+            userinfo.removeSate(BitStatesUtils.HAS_BIDREQUEST_PROCESS);
+            userinfoService.update(userinfo);
+        }
     }
 
 
@@ -302,64 +337,88 @@ public class BidRequestServiceImpl implements IBidRequestService {
                 bidRequest.setBidRequestState(BidConst.BIDREQUEST_STATE_PAYING_BACK);
                 //设置投标对象的状态
                 bidService.updateState(bidRequest.getId(), BidConst.BIDREQUEST_STATE_PAYING_BACK);
-                //借款人可用金额增加
-                Account bidRequestaccount = accountService.get(bidRequest.getCreateUser().getId());
-                bidRequestaccount.setUsableAmount(bidRequestaccount.getUsableAmount().add(bidRequest.getBidRequestAmount()));
-                //借款人剩余授信额度减少
-                bidRequestaccount.setRemainBorrowLimit(bidRequestaccount.getRemainBorrowLimit().subtract(bidRequest.getBidRequestAmount()));
-                //借款人账户中待还金额增加
-                BigDecimal b1 = bidRequest.getBidRequestAmount().add(bidRequest.getTotalRewardAmount());
-                bidRequestaccount.setUnReturnAmount(bidRequestaccount.getUnReturnAmount().add(b1));
-                //生成借款人的流水对象
-                accountFlowService.createBidRequestSuccessFlow(bidRequestaccount, bidRequest.getBidRequestAmount());
+                if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {//判断是信用标才做下面的修改
+                    //借款人可用金额增加
+                    Account bidRequestaccount = accountService.get(bidRequest.getCreateUser().getId());
+                    bidRequestaccount.setUsableAmount(bidRequestaccount.getUsableAmount().add(bidRequest.getBidRequestAmount()));
+                    //借款人剩余授信额度减少
+                    bidRequestaccount.setRemainBorrowLimit(bidRequestaccount.getRemainBorrowLimit().subtract(bidRequest.getBidRequestAmount()));
+                    //借款人账户中待还金额增加
+                    BigDecimal b1 = bidRequest.getBidRequestAmount().add(bidRequest.getTotalRewardAmount());
+                    bidRequestaccount.setUnReturnAmount(bidRequestaccount.getUnReturnAmount().add(b1));
+                    //生成借款人的流水对象
+                    accountFlowService.createBidRequestSuccessFlow(bidRequestaccount, bidRequest.getBidRequestAmount());
 
-                //移除申请人的借款状态码
-                Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
-                userinfo.removeSate(BitStatesUtils.HAS_BIDREQUEST_PROCESS);
-                userinfoService.update(userinfo);
-                //支付平台管理费
-                BigDecimal accountManagementCharge = CalculatetUtil.calAccountManagementCharge(bidRequest.getBidRequestAmount());
-                bidRequestaccount.setUsableAmount(bidRequestaccount.getUsableAmount().subtract(accountManagementCharge));
-                accountFlowService.createPayAccountManagementCharge(bidRequestaccount, accountManagementCharge);
-                accountService.update(bidRequestaccount);
-                //支付流水
-                SystemAccount systemAccount = systemAccountService.getCurrent();
-                systemAccount.setUsableAmount(systemAccount.getUsableAmount().add(accountManagementCharge));
-                systemAccountService.update(systemAccount);
+                    //移除申请人的借款状态码
+                    Userinfo userinfo = userinfoService.get(bidRequest.getCreateUser().getId());
+                    userinfo.removeSate(BitStatesUtils.HAS_BIDREQUEST_PROCESS);
+                    userinfoService.update(userinfo);
+                    //支付平台管理费
+                    BigDecimal accountManagementCharge = CalculatetUtil.calAccountManagementCharge(bidRequest.getBidRequestAmount());
+                    bidRequestaccount.setUsableAmount(bidRequestaccount.getUsableAmount().subtract(accountManagementCharge));
+                    accountFlowService.createPayAccountManagementCharge(bidRequestaccount, accountManagementCharge);
+                    accountService.update(bidRequestaccount);
+                    //支付流水
+                    SystemAccount systemAccount = systemAccountService.getCurrent();
+                    systemAccount.setUsableAmount(systemAccount.getUsableAmount().add(accountManagementCharge));
+                    systemAccountService.update(systemAccount);
 
-                //增加系统账户收取平台管理费的流水
-                systemAccountFlowService.createSystemAccountManagementCharge(systemAccount, accountManagementCharge);
+                    //增加系统账户收取平台管理费的流水
+                    systemAccountFlowService.createSystemAccountManagementCharge(systemAccount, accountManagementCharge);
+
+                }
 
                 //更新投资人账号
                 Long bidUserId;
                 Account bidUseracccount;
+                Map<Long, ExpAccount> expAccountMap = new HashMap<Long, ExpAccount>();
                 Map<Long, Account> accountMap = new HashMap<Long, Account>();
                 for (Bid bid : bidRequest.getBids()) {
-
                     bidUserId = bid.getBidUser().getId();
                     bidUseracccount = accountMap.get(bidUserId);
-                    if (bidUseracccount == null) {
-                        bidUseracccount = accountService.get(bidUserId);
-                        accountMap.put(bidUserId, bidUseracccount);
+                    if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {//信用标
+                        if (bidUseracccount == null) {
+                            bidUseracccount = accountService.get(bidUserId);
+                            accountMap.put(bidUserId, bidUseracccount);
+                        }
+                        //投资人冻结金额减少
+                        bidUseracccount.setFreezedAmount(bidUseracccount.getFreezedAmount().subtract(bid.getAvailableAmount()));
+                        accountFlowService.createBidSuccessFlow(bidUseracccount, bid.getAvailableAmount());
+                    } else {
+                        //体验标
+                        Account bidAccount = accountMap.get(bidUserId);
+                        ExpAccount bidExpAccount = expAccountMap.get(bidUserId);
+                        if (bidAccount == null) {
+                            bidAccount = accountService.get(bidUserId);
+                            accountMap.put(bidUserId, bidAccount);
+                            bidExpAccount = expAccountService.get(bidUserId);
+                            expAccountMap.put(bidUserId, bidExpAccount);
+                        }
+                        bidExpAccount.setFreezedAmount(bidExpAccount.getFreezedAmount().subtract(bid.getAvailableAmount()));
+                        expAccountFlowService.createBidSuccessFlow(bidExpAccount, bid.getAvailableAmount());
                     }
-                    //投资人冻结金额减少
-                    bidUseracccount.setFreezedAmount(bidUseracccount.getFreezedAmount().subtract(bid.getAvailableAmount()));
-                    accountFlowService.createBidSuccessFlow(bidUseracccount, bid.getAvailableAmount());
-                }
 
+                }
                 //还款对象.....
                 List<PaymentSchedule> paymentSchedules = createPaymentSchedule(bidRequest);
+
                 //计算投资人的待收利息和待收本金
                 for (PaymentSchedule ps : paymentSchedules) {
                     for (PaymentScheduleDetail psd : ps.getDetails()) {
                         bidUseracccount = accountMap.get(psd.getInvestorId());
                         bidUseracccount.setUnReceiveInterest(bidUseracccount.getUnReceiveInterest().add(psd.getInterest()));
-                        bidUseracccount.setUnReceivePrincipal(bidUseracccount.getUnReceivePrincipal().add(psd.getPrincipal()));
+
+                        if (bidRequest.getBidRequestType() == BidConst.BIDREQUEST_TYPE_NORMAL) {
+                            bidUseracccount.setUnReceivePrincipal(bidUseracccount.getUnReceivePrincipal().add(psd.getPrincipal()));
+                        }
                     }
                 }
 
                 for (Account account : accountMap.values()) {
                     accountService.update(account);
+                }
+                for (ExpAccount expAccount : expAccountMap.values()) {
+                    expAccountService.update(expAccount);
                 }
             } else {
                 //审核拒绝
@@ -374,8 +433,8 @@ public class BidRequestServiceImpl implements IBidRequestService {
     @Override
     public void publish(BidRequest bidRequest) {
 
-        if ( bidRequest.getBidRequestAmount().compareTo(BidConst.SMALLEST_BIDREQUEST_AMOUNT) >= 0 &&
-                bidRequest.getMinBidAmount().compareTo(BidConst.SMALLEST_BID_AMOUNT)>= 0
+        if (bidRequest.getBidRequestAmount().compareTo(BidConst.SMALLEST_BIDREQUEST_AMOUNT) >= 0 &&
+                bidRequest.getMinBidAmount().compareTo(BidConst.SMALLEST_BID_AMOUNT) >= 0
                 ) {
             BidRequest br = new BidRequest();
             br.setApplyTime(new Date());
@@ -396,13 +455,18 @@ public class BidRequestServiceImpl implements IBidRequestService {
         }
     }
 
+    @Override
+    public PageResult querPaymentSchedule(PaymentScheduleQueryObject qo) {
+        return paymentScheduleService.queryPageResult(qo);
+    }
+
     private List<PaymentSchedule> createPaymentSchedule(BidRequest bidRequest) {
 
         List<PaymentSchedule> paymentSchedules = new ArrayList<PaymentSchedule>();
         PaymentSchedule ps;
         BigDecimal principalTemp = BigDecimal.ZERO;
         BigDecimal interestTemp = BigDecimal.ZERO;
-        for (int i =0;i<bidRequest.getMonthes2Return();i++) {
+        for (int i = 0; i < bidRequest.getMonthes2Return(); i++) {
 
             ps = new PaymentSchedule();
             ps.setBidRequestId(bidRequest.getId());
@@ -411,7 +475,7 @@ public class BidRequestServiceImpl implements IBidRequestService {
             ps.setBorrowUser(bidRequest.getCreateUser());
             ps.setDeadLine(DateUtils.addMonths(bidRequest.getPublishTime(), i + 1));
             ps.setReturnType(bidRequest.getReturnType());
-            ps.setMonthIndex(i+1);
+            ps.setMonthIndex(i + 1);
 
             //判断是否是最后一期
             //不是
@@ -454,7 +518,7 @@ public class BidRequestServiceImpl implements IBidRequestService {
 
             paymentSchedules.add(ps);
         }
-            return paymentSchedules;
+        return paymentSchedules;
     }
 
     private void createPaymentScheduleDetailList(PaymentSchedule ps, BidRequest bidRequest) {
@@ -463,7 +527,7 @@ public class BidRequestServiceImpl implements IBidRequestService {
         Bid bid;
         BigDecimal principalTemp = BigDecimal.ZERO;
         BigDecimal interestTemp = BigDecimal.ZERO;
-        for (int i= 0;i< bidRequest.getBids().size();i++) {
+        for (int i = 0; i < bidRequest.getBids().size(); i++) {
             bid = bidRequest.getBids().get(i);
             psd = new PaymentScheduleDetail();
 

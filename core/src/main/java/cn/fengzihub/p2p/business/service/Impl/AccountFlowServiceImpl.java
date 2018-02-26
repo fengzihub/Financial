@@ -102,6 +102,12 @@ public class AccountFlowServiceImpl implements IAccountFlowService {
 
     }
 
+    @Override
+    public void createRecevice(Account account, BigDecimal amount) {
+        createFlow(account,amount,BidConst.ACCOUNT_ACTIONTYPE_CALLBACK_INTEREST_MONEY,"收到体验标利息:" + amount + "元");
+
+    }
+
 
     private void createFlow(Account account, BigDecimal amount, int actionType, String remark) {
         AccountFlow flow = new AccountFlow();

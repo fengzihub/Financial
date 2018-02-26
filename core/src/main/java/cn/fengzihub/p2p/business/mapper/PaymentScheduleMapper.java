@@ -18,4 +18,8 @@ public interface PaymentScheduleMapper {
     List queryPage(PaymentScheduleQueryObject qo);
 
     List<PaymentSchedule> selectBidRequestId(Long bidRequestId);
+
+    int queryForCount(PaymentScheduleQueryObject qo);
+
+    List<PaymentSchedule> queryForList(PaymentScheduleQueryObject qo);
 }

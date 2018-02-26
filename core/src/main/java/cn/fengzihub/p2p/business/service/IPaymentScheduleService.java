@@ -1,5 +1,6 @@
 package cn.fengzihub.p2p.business.service;
 
+import cn.fengzihub.p2p.base.util.PageResult;
 import cn.fengzihub.p2p.business.domain.PaymentSchedule;
 import cn.fengzihub.p2p.business.query.PaymentScheduleQueryObject;
 import com.github.pagehelper.PageInfo;
@@ -21,4 +22,7 @@ public interface IPaymentScheduleService {
      * @param id
      */
     void returnMoney(Long id);
+
+
+    PageResult queryPageResult(PaymentScheduleQueryObject qo);
 }

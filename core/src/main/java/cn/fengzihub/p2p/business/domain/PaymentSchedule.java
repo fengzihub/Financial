@@ -3,6 +3,7 @@ package cn.fengzihub.p2p.business.domain;
 import cn.fengzihub.p2p.base.domain.BaseDomain;
 import cn.fengzihub.p2p.base.domain.Logininfo;
 import cn.fengzihub.p2p.base.util.BidConst;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter@Setter
 public class PaymentSchedule extends BaseDomain {
     private Date payDate;//还款日期
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
     private Date deadLine;//本期还款截止日期
     private BigDecimal totalAmount = BidConst.ZERO;//本期还款金额
     private BigDecimal principal = BidConst.ZERO;//本期还款本金
